@@ -43,4 +43,38 @@ class Component
 		{
 			return value;
 		}
+
+		char setType(char t)
+		{
+			type=t;
+		}
+
+		int setNum(int t)
+		{
+			cNum=t;
+		}
+
+		int setInitialNet(int t)
+		{
+			init_net=t;
+		}
+
+		int setFinalNet(int t)
+		{
+			f_net=t;
+		}
+
+		float setVal(float t)
+		{
+			value=t;
+		}
+
+		void clear()
+		{
+			type=NULL;
+			cNum=NULL;
+			init_net=NULL;
+			f_net=NULL;
+			value=NULL;
+		}
 };
