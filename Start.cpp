@@ -29,6 +29,10 @@ using namespace std;
 			cout<<comp[i].getType()<<" "<<comp[i].getNum()<<" "<<comp[i].getInitialNet()<<" "<<comp[i].getFinalNet()<<" "<<comp[i].getVal()<<endl;
 		}
 	}	
+	typedef struct yy_buffer_state * YY_BUFFER_STATE;
+extern int yyparse();
+extern YY_BUFFER_STATE yy_scan_string(char * str);
+extern void yy_delete_buffer(YY_BUFFER_STATE buffer);
 %} 
 
 Component [R|L|C][1-9][0-9]*
@@ -43,7 +47,7 @@ net Net
 
 %%
 
-{Component}{whitespace}*(({net}[0-9]*)|0){whitespace}*(({net}[0-9]*)|0){whitespace}*[1-9][0-9]*{factor}{unit}{whitespace}    {
+{Component}{whitespace}*(({net}[0-9]*)|0){whitespace}*(({net}[0-9]*)|0){whitespace}*[1-9][0-9]*{factor}{unit}[ ]*[\n]    {
 
 									string temp=yytext;
 									istringstream ss(temp);
@@ -167,15 +171,25 @@ x	{
 }
 
 .	{
-		cout<<"Wrong"<<endl;
+		cout<<yytext<<endl;
 }
 
 
 %%
 
-int main(void)
-{
-    /* Call the lexer, then quit. */
+int main(int argc, char* argv[]) {
+    FILE *fh;
+
+    if (argc == 2 && (fh = fopen(argv[1], "r")))
+        yyin = fh;
+    // cout<<yyin;
     yylex();
+    // char string[] = "C1 Net1 0 10NF";
+    // YY_BUFFER_STATE buffer = yy_scan_string(string);
+    // yyparse();
+    // yy_delete_buffer(buffer);
     return 0;
-}
+
+  
+    
+} 
