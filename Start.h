@@ -1,13 +1,16 @@
 #ifndef START_H
 #define START_H
 #include "Component.h"
+#include "Source.h"
 #include <iostream>
 #include <fstream>
 using namespace std;
 #include <vector>
 
 extern Component comp[100];
+extern Source sour[10];
 extern int c_index;
+extern int s_index;
 ofstream ofile;
 
 void header() {
