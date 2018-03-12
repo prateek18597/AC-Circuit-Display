@@ -62,37 +62,79 @@ void capc(int x,int y){
 	ofile<<"<line x1=\""<<x+15<<"\" "<<"y1=\""<<y<<"\" "<<"x2=\""<<x+25<<"\" "<<"y2=\""<<y<<"\" "<<"style=\"stroke:rgb(255,0,0);stroke-width:2\" />"<<endl;
 }
 
+
+void Indc(int x,int y){
+
+
+	ofile<<"<path d=\"M"<<x<<","<<y<<" a1,1 0 0,0 10,0\" fill=\"none\" stroke=\"green\" stroke-width=\"3\" />" ;
+	ofile<<"<path d=\"M"<<x+10<<","<<y<<" a1,1 0 0,0 10,0\" fill=\"none\" stroke=\"green\" stroke-width=\"3\" />" ;
+	ofile<<"<path d=\"M"<<x+20<<","<<y<<" a1,1 0 0,0 10,0\" fill=\"none\" stroke=\"green\" stroke-width=\"3\" />" ;
+	ofile<<"<path d=\"M"<<x+30<<","<<y<<" a1,1 0 0,0 10,0\" fill=\"none\" stroke=\"green\" stroke-width=\"3\" />" ;
+
+}
+
+
+
+
+
+
+
+
 void drawRes(int net1,int net2,int offset)
 {
-    int diff=net2-net1;
+    int diff=abs(net2-net1);
 
     
     float l1=(diff-30)/2 ;
-    line(net1,250+offset,l1,'h',1);
-    resistor(net1+l1,250+offset);
-    line(net1+l1+30,250+offset,l1,'h',1);
 
-    line(net1,250,offset,'v',0);
-    line(net2,250,offset,'v',0);
+    int x=min(net1,net2);
+    	
+    line(x,250+offset,l1,'h',1);
+    resistor(x+l1,250+offset);
+    line(x+l1+30,250+offset,l1,'h',1);
+
+
+   line(net1,250,offset,'v',0);
+   line(net2,250,offset,'v',0);
     
 }
  
 
 void drawCap(int net1,int net2,int offset)
 {
-	int diff=net2-net1;
+	int diff=abs(net2-net1);
 
 	float l1=(diff-22)/2 ;
 
-	line(net1,250+offset,l1,'h',1);
-    capc(net1+l1,250+offset);
-    line(net1+l1+22,250+offset,l1,'h',1);
+	int x=min(net1,net2);
+
+ 	line(x,250+offset,l1,'h',1);
+    capc(x+l1,250+offset);
+    line(x+l1+22,250+offset,l1,'h',1);
+	
 
     line(net1,250,offset,'v',0);
     line(net2,250,offset,'v',0); 
 
 }
 
+void drawInd(int net1,int net2,int offset)
+{
+
+	int diff=abs(net2-net1);
+
+	float l1=(diff-40)/2 ;
+
+	int x=min(net1,net2);
+	line(x,250+offset,l1,'h',1);
+    Indc(x+l1,250+offset);
+    line(x+l1+40,250+offset,l1,'h',1);
+
+   line(net1,250,offset,'v',0);
+   line(net2,250,offset,'v',0); 
+
+
+}
 
 void genmaim() {
   unsigned x, y;
@@ -155,21 +197,34 @@ void genmaim() {
   
   header();
   
-  int offset=0;
+  int offset=15;
   for(int i=0;i<num;i++)
   {	
   	int a = comp[i].getInitialNet();
   	int b = comp[i].getFinalNet();
 
-  	if( abs(netval[a] - netval[b]) == 80  &&  number[a][b]==0 )  
-  	offset=0;
-  	else 
-  	offset+= 7;	
+  		
+  	if( abs(netval[a] - netval[b]) == 80  &&  number[a][b]==0 ){
 
   	if(comp[i].getType() == 'R')
+	drawRes(netval[a],netval[b],0);
+	else if(comp[i].getType() == 'C')
+	drawCap(netval[a],netval[b],0);	
+	else if(comp[i].getType() == 'L')
+    drawInd(netval[a],netval[b],0);
+
+	}
+	else{
+
+	if(comp[i].getType() == 'R')
 	drawRes(netval[a],netval[b],offset);
 	else if(comp[i].getType() == 'C')
 	drawCap(netval[a],netval[b],offset);	
+	else if(comp[i].getType() == 'L')
+    drawInd(netval[a],netval[b],offset);
+	offset+= 15;
+	
+	}
 
 	number[a][b]++;
   	number[b][a]++;

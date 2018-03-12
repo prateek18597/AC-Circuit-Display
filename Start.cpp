@@ -5,9 +5,7 @@
 #include <stdlib.h>
 #include<fstream>	
 #include "Start.h"
-// #include "gensvg.h"
-// #include "img.h"
-// #include "Component.h"
+
 using namespace std;
 %}
 %option noyywrap
