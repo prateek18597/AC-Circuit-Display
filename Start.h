@@ -3,6 +3,6 @@
 #include "Component.h"
 
 extern Component comp[100];
-extern int c_index=0;
+extern int c_index;
 
 #endif

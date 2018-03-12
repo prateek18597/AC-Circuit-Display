@@ -3,7 +3,9 @@
 #include <sstream>
 #include <string>
 #include <stdlib.h>
-#include "Component.h"
+#include "Start.h"
+// #include "img.h"
+// #include "Component.h"
 using namespace std;
 %}
 %option noyywrap
