@@ -8,6 +8,8 @@ class Source
 		float DCO;
 		float ampli;
 		float freq;
+		char* strFreq;
+		char* strDelay;
 		float delay;
 		float damp;
 	public:
@@ -95,6 +97,26 @@ class Source
 		void setDCO(float d)
 		{
 			DCO=d;
+		}
+
+		char* getStrFreq()
+		{
+			return strFreq;
+		}
+
+		void setStrFreq(char* s)
+		{
+			strFreq=s;
+		}
+
+		char* getStrDelay()
+		{
+			return strDelay;
+		}
+
+		void setStrDelay(char* s)
+		{
+			strDelay=s;
 		}
 
 		void setDelay(float d)

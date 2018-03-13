@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <fstream>	
 #include "Start.h"
+	#include <cstring>
 
 using namespace std;
 %}
@@ -94,7 +95,7 @@ sine1 (SINE)[ ]*(\(){Decimal}{whitespace}*{Decimal}{whitespace}*{Decimal}(Khz){w
 	ss>>t;
 	// cout<<t.substr(0,t.length()-3)<<endl;
 	magnitude=stof(t.substr(0,t.length()-3));
-	
+	sour[s_index].setStrFreq((char*)t.c_str());
 	switch(t[t.length()-3])
 	{
 		case 'K':
@@ -126,6 +127,7 @@ sine1 (SINE)[ ]*(\(){Decimal}{whitespace}*{Decimal}{whitespace}*{Decimal}(Khz){w
 	// cout<<t.substr(0,t.length()-1)<<endl;
 	magnitude=stof(t.substr(0,t.length()-1));
 	sour[s_index].setDelay(magnitude);
+	sour[s_index].setStrDelay((char*)t.c_str());
 	ss>>t;
 	// cout<<t<<endl;
 	magnitude=stof(t);
@@ -225,7 +227,8 @@ sine1 (SINE)[ ]*(\(){Decimal}{whitespace}*{Decimal}{whitespace}*{Decimal}(Khz){w
 
 
 										}
-									}	
+									}
+									comp[c_index].setStrValue((char*)t.c_str());	
 												
 									if(comp[c_index].getInitialNet()==comp[c_index].getFinalNet())
 									{	
