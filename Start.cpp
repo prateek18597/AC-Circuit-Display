@@ -3,7 +3,7 @@
 #include <sstream>
 #include <string>
 #include <stdlib.h>
-#include<fstream>	
+#include <fstream>	
 #include "Start.h"
 
 using namespace std;
@@ -16,9 +16,6 @@ using namespace std;
 	Source sour[10];
 	int c_index=0;
 	int s_index=0;
-	int r=0,l=0,c=0;
-	int inductor[100][4];
-	int capacitor[100][4];
 	void genmaim();
 
 	void show()
@@ -49,9 +46,10 @@ factor [N|U|M|K]?
 unit [F|H]?
 NotUnit (^[ |F|H])
 Position (({net}([0]|([1-9][0-9]*)))|0)
-net Net
+net (Net)|(NET)|(net)
 Decimal (([0-9]+(\.)[0-9]+)|([0-9]*))
-sine (SINE)[ ]*(\(){whitespace}*{Decimal}{whitespace}*{Decimal}{whitespace}*{Decimal}(Khz){whitespace}*{Decimal}(S)[ ]*{Decimal}{whitespace}*(\)){whitespace}
+sine (SINE)[ ]*(\(){whitespace}+{Decimal}{whitespace}*{Decimal}{whitespace}*{Decimal}(Khz){whitespace}*{Decimal}(S)[ ]*{Decimal}{whitespace}*(\)){whitespace}
+sine1 (SINE)[ ]*(\(){Decimal}{whitespace}*{Decimal}{whitespace}*{Decimal}(Khz){whitespace}*{Decimal}(S)[ ]*{Decimal}{whitespace}*(\)){whitespace}
 
 %%
 
@@ -87,7 +85,7 @@ sine (SINE)[ ]*(\(){whitespace}*{Decimal}{whitespace}*{Decimal}{whitespace}*{Dec
 	ss>>t;
 	ss>>t;
 	// cout<<t<<endl;	
-	magnitude=stof(t.substr(1));
+	magnitude=stof(t);
 	sour[s_index].setDCO(magnitude);
 	ss>>t;
 	// cout<<t<<endl;
