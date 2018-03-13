@@ -3,7 +3,9 @@
 #include <sstream>
 #include <string>
 #include <stdlib.h>
+#include<fstream>	
 #include "Start.h"
+// #include "gensvg.h"
 // #include "img.h"
 // #include "Component.h"
 using namespace std;
@@ -17,6 +19,7 @@ using namespace std;
 	int r=0,l=0,c=0;
 	int inductor[100][4];
 	int capacitor[100][4];
+	void genmaim();
 
 	void show()
 	{
@@ -25,7 +28,9 @@ using namespace std;
 		{
 			cout<<comp[i].getType()<<" "<<comp[i].getNum()<<" "<<comp[i].getInitialNet()<<" "<<comp[i].getFinalNet()<<" "<<comp[i].getVal()<<endl;
 		}
-	}	
+	}
+
+
 %} 
 
 Component [R|L|C][1-9][0-9]*
@@ -159,6 +164,7 @@ int main(int argc, char* argv[])
         yyin = fh;
 
     yylex();
+    genmaim();
     
-    return 0;
+	return 0;
 } 
