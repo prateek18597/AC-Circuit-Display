@@ -17,6 +17,7 @@ using namespace std;
 	Source sour[10];
 	int c_index=0;
 	int s_index=0;
+	bool term=false;
 	void genmaim();
 
 	void show()
@@ -245,11 +246,16 @@ sine1 (SINE)[ ]*(\(){Decimal}{whitespace}*{Decimal}{whitespace}*{Decimal}(Khz){w
 }
 
 x	{
+	if(!term)
 	show();
 }
 
 .	{
-		// cout<<yytext<<endl;
+		term=true;
+		cout<<"Input File has some error."<<endl;
+		exit(1);
+
+		
 }
 
 
@@ -264,7 +270,9 @@ int main(int argc, char* argv[])
         yyin = fh;
 
     yylex();
-    genmaim();
-    
-	return 0;
+    if(!term){
+    	genmaim();
+    	return 0;
+    }
+    return 0;
 } 

@@ -3,5 +3,5 @@ C1 Net0 Net1 100NF
 L1 Net0 0 10NH
 R2 Net0 0 1K
 I1 Net0 0 SINE ( 0 1 10Khz 0.0S 0 )
-C2 Net0 0 10NF
+C Net0 0 10NF
 x
