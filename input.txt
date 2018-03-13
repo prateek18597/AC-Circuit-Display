@@ -1,8 +1,5 @@
-R1 Net0 Net1 10K
-R2 Net1 Net2 10K
-R3 Net2 Net3 10K
-R4 Net0 Net1 10K
-R5 Net0 Net2 10K
-R6 Net1 Net3 5K
-C1 Net3 Net4 10NF
-
+R1 Net1 Net4 10K
+C1 Net0 Net1 100NF
+L1 Net0 Net4 10NH
+R2 Net0 Net4 1K
+C2 Net0 Net4 10NF
