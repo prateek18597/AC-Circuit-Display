@@ -10,9 +10,28 @@ extern Component comp[100];
 extern int c_index;
 ofstream ofile;
 
-void header() {
+void html()
+{
+    ofile<<"<html>\n";
+    ofile<<"<body>\n";
+    ofile<<"<style>\n";
+    ofile<<"body{\n";
+    ofile<<"background-color: #93B874;\n";
+    ofile<<"}\n";
+    ofile<<"</style>\n";
+}
+
+void close()
+{
+  ofile<<"</body>\n";
+  ofile<<"</html>\n";
+
+}
+void header(int numnets) {
  
-ofile<<"<svg height=\"510\" width=\"400\">"<<endl; // height corresponds to vertical and width is horizontal
+
+ofile<<"<svg height=\""<<500<<"\" width=\""<<1000<<"\">"<<endl;
+ // height corresponds to vertical and width is horizontal
 }
 // Epilog for the SVG image
 
@@ -44,18 +63,19 @@ void line(int x,int y,int length,char c,int color)
 
 }
 
-void resistor(int x, int y) {
+void resistor(int x, int y,float nu,int val) {
   
 
-    ofile<<"<path d=\"M"<<x<<" "<<y<<" L"<<x+5<<" "<<y+3<<" L"<<x+10<<" "<<y<<" L"<<x+15<<" "<<y+3<<" L"<<x+20<<" "<<y<<" L"<<x+25<<" "<<y+3<<" L"<<x+30<<" "<<y<<"\" stroke=\"red\" fill=\"none\" stroke-width=\"3\"  /> "<<endl;
-
+    ofile<<"<path d=\"M"<<x<<" "<<y<<" L"<<x+5<<" "<<y+5<<" L"<<x+10<<" "<<y<<" L"<<x+15<<" "<<y+5<<" L"<<x+20<<" "<<y<<" L"<<x+25<<" "<<y+5<<" L"<<x+30<<" "<<y<<"\" stroke=\"red\" fill=\"none\" stroke-width=\"3\"  /> "<<endl;
+    
+   // ofile<<"<text x=\""<<x+15<<"\" y=\""<<y-2<<"\" fill=\"red\">r"<<nu<<"="<<val<<"Ohm </text>";
 }
 
 void capc(int x,int y){
 
 	ofile<<"<line x1=\""<<x<<"\" "<<"y1=\""<<y<<"\" "<<"x2=\""<<x+10<<"\" "<<"y2=\""<<y<<"\" "<<"style=\"stroke:rgb(255,0,0);stroke-width:2\" />"<<endl;
-	ofile<<"<line x1=\""<<x+10<<"\" "<<"y1=\""<<y-5<<"\" "<<"x2=\""<<x+10<<"\" "<<"y2=\""<<y+5<<"\" "<<"style=\"stroke:rgb(255,0,0);stroke-width:2\" />"<<endl;
-	ofile<<"<line x1=\""<<x+15<<"\" "<<"y1=\""<<y-5<<"\" "<<"x2=\""<<x+15<<"\" "<<"y2=\""<<y+5<<"\" "<<"style=\"stroke:rgb(255,0,0);stroke-width:2\" />"<<endl;
+	ofile<<"<line x1=\""<<x+10<<"\" "<<"y1=\""<<y-9<<"\" "<<"x2=\""<<x+10<<"\" "<<"y2=\""<<y+9<<"\" "<<"style=\"stroke:rgb(255,0,0);stroke-width:2\" />"<<endl;
+	ofile<<"<line x1=\""<<x+15<<"\" "<<"y1=\""<<y-9<<"\" "<<"x2=\""<<x+15<<"\" "<<"y2=\""<<y+9<<"\" "<<"style=\"stroke:rgb(255,0,0);stroke-width:2\" />"<<endl;
 	ofile<<"<line x1=\""<<x+15<<"\" "<<"y1=\""<<y<<"\" "<<"x2=\""<<x+25<<"\" "<<"y2=\""<<y<<"\" "<<"style=\"stroke:rgb(255,0,0);stroke-width:2\" />"<<endl;
 }
 
@@ -77,7 +97,7 @@ void Indc(int x,int y){
 
 
 
-void drawRes(int net1,int net2,int offset)
+void drawRes(int net1,int net2,int offset,int n,float val)
 {
     int diff=abs(net2-net1);
 
@@ -87,7 +107,7 @@ void drawRes(int net1,int net2,int offset)
     int x=min(net1,net2);
     	
     line(x,250+offset,l1,'h',1);
-    resistor(x+l1,250+offset);
+    resistor(x+l1,250+offset,n,val);
     line(x+l1+30,250+offset,l1,'h',1);
 
 
@@ -135,11 +155,13 @@ void drawInd(int net1,int net2,int offset)
 
 void genmaim() {
   unsigned x, y;
-
+  
   bool N[100];
 
     
-    ofile.open("A.svg");
+  ofile.open("top.svg");
+  html();
+
   for(int i=0;i<100;i++)
   N[i]=false; 
 
@@ -177,49 +199,77 @@ void genmaim() {
   	{	
   		netval[a]=s;
   		N[a]=true;
-  		s+=80;
+  		s+=300;
+
   	}	
 
   	if(N[b]==false)
   	{
   		netval[b]=s;
   		N[b]=true;
-  		s+=80;
+  		s+=300;
+
   	}	
 
 
   }
-		
+	
+  int numnets=0;
+
+  for(int i=0;i<100;i++)
+  {
+    if(N[i]==true)
+    numnets++;  
+
+  }
+  
+
+  header(numnets);
+
+  for(int i=0;i<100;i++)
+  {
+    if(N[i]==true)
+    {
+      if(i!=0)
+      ofile<<"<text x=\""<<netval[i]<<"\" y=\"248\" "<<" fill=\"red\">net"<<i-1<<"</text>"<<endl; 
+      else
+      ofile<<"<text x=\""<<netval[i]<<"\" y=\"248\" "<<" fill=\"red\">0"<<"</text>"<<endl;  
+
+    }  
+
+  }
+  
+
   
   
-  header();
-  
-  int offset=15;
+  int offset=30;
   for(int i=0;i<num;i++)
   {	
   	int a = comp[i].getInitialNet();
   	int b = comp[i].getFinalNet();
 
+  	int in=comp[i].getNum();
+  	float val =comp[i].getVal();
   		
-  	if( abs(netval[a] - netval[b]) == 80  &&  number[a][b]==0 ){
+  	if( abs(netval[a] - netval[b]) == 300  &&  number[a][b]==0 ){
 
   	if(comp[i].getType() == 'R')
-	drawRes(netval[a],netval[b],0);
-	else if(comp[i].getType() == 'C')
-	drawCap(netval[a],netval[b],0);	
-	else if(comp[i].getType() == 'L')
+	  drawRes(netval[a],netval[b],0,in,val);
+	  else if(comp[i].getType() == 'C')
+	  drawCap(netval[a],netval[b],0);	
+	  else if(comp[i].getType() == 'L')
     drawInd(netval[a],netval[b],0);
 
 	}
 	else{
 
 	if(comp[i].getType() == 'R')
-	drawRes(netval[a],netval[b],offset);
+	drawRes(netval[a],netval[b],offset,in,val);
 	else if(comp[i].getType() == 'C')
 	drawCap(netval[a],netval[b],offset);	
 	else if(comp[i].getType() == 'L')
-    drawInd(netval[a],netval[b],offset);
-	offset+= 15;
+  drawInd(netval[a],netval[b],offset);
+	offset+= 30;
 	
 	}
 
@@ -231,7 +281,7 @@ void genmaim() {
 
   
   footer();
-
+  close();
   ofile.close();
 
 }
