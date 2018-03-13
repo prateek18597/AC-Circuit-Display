@@ -251,7 +251,7 @@ void genmaim() {
   bool N[100];
 
     
-  ofile.open("top.svg");
+  ofile.open("top.html");
   html();
 
   for(int i=0;i<100;i++)
@@ -343,7 +343,7 @@ void genmaim() {
 
   	int in=comp[i].getNum();
   	float val =comp[i].getVal();
-  		
+	cout<<comp[i].getStrValue()<<endl;  		
   	if( abs(netval[a] - netval[b]) == 300  &&  number[a][b]==0 ){
 
   	if(comp[i].getType() == 'R')
