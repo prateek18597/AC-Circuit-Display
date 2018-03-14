@@ -34,7 +34,7 @@ void close()
 void header(int numnets) {
  
 
-ofile<<"<svg height=\""<<500<<"\" width=\""<<1000<<"\">"<<endl;
+ofile<<"<svg height=\""<<1000<<"\" width=\""<<1000<<"\">"<<endl;
  // height corresponds to vertical and width is horizontal
 
 }
@@ -53,7 +53,7 @@ void line(int x,int y,int length,char c,int color)
   if(color==1){		
    
    if(c=='h')		 
-   ofile<<"<line x1=\""<<x<<"\" "<<"y1=\""<<y<<"\" "<<"x2=\""<<x+length<<"\" "<<"y2=\""<<y<<"\" "<<"style=\"stroke:rgb(255,0,0);stroke-width:2\" />"<<endl;
+   ofile<<"<line x1=\""<<x<<"\" "<<"y1=\""<<y<<"\" "<<"x2=\""<<x+length<<"\" "<<"y2=\""<<y<<"\" "<<"style=\"stroke:rgb(0,0,0);stroke-width:2\" />"<<endl;
    else
    ofile<<"<line x1=\""<<x<<"\" "<<"y1=\""<<y<<"\" "<<"x2=\""<<x<<"\" "<<"y2=\""<<y+length<<"\" "<<"style=\"stroke:rgb(255,0,0);stroke-width:2\" />"<<endl; 		
   
@@ -62,7 +62,7 @@ void line(int x,int y,int length,char c,int color)
   {
    
    if(c=='h')		 
-   ofile<<"<line x1=\""<<x<<"\" "<<"y1=\""<<y<<"\" "<<"x2=\""<<x+length<<"\" "<<"y2=\""<<y<<"\" "<<"style=\"stroke:rgb(0,0,255);stroke-width:2\" />"<<endl;
+   ofile<<"<line x1=\""<<x<<"\" "<<"y1=\""<<y<<"\" "<<"x2=\""<<x+length<<"\" "<<"y2=\""<<y<<"\" "<<"style=\"stroke:rgb(0,0,0);stroke-width:2\" />"<<endl;
    else
    ofile<<"<line x1=\""<<x<<"\" "<<"y1=\""<<y<<"\" "<<"x2=\""<<x<<"\" "<<"y2=\""<<y+length<<"\" "<<"style=\"stroke:rgb(0,0,255);stroke-width:2\" />"<<endl;
   
@@ -73,27 +73,26 @@ void line(int x,int y,int length,char c,int color)
 void resistor(int x, int y,float nu,int val) {
   
 
-    ofile<<"<path d=\"M"<<x<<" "<<y<<" L"<<x+5<<" "<<y+5<<" L"<<x+10<<" "<<y<<" L"<<x+15<<" "<<y+5<<" L"<<x+20<<" "<<y<<" L"<<x+25<<" "<<y+5<<" L"<<x+30<<" "<<y<<"\" stroke=\"red\" fill=\"none\" stroke-width=\"3\"  /> "<<endl;
-    
-   // ofile<<"<text x=\""<<x+15<<"\" y=\""<<y-2<<"\" fill=\"red\">r"<<nu<<"="<<val<<"Ohm </text>";
+    ofile<<"<path d=\"M"<<x<<" "<<y<<" L"<<x+5<<" "<<y+10<<" L"<<x+10<<" "<<y<<" L"<<x+15<<" "<<y+10<<" L"<<x+20<<" "<<y<<" L"<<x+25<<" "<<y+10<<" L"<<x+30<<" "<<y<<"\" stroke=\"black\" fill=\"none\" stroke-width=\"3\"  /> "<<endl;
+    ofile<<"<text x=\""<<x+10<<"\" y=\""<<y-4<<"\" fill=\"black\">r"<<nu<<"="<<val<<"Ohm </text>";
 }
 
 void capc(int x,int y){
 
-	ofile<<"<line x1=\""<<x<<"\" "<<"y1=\""<<y<<"\" "<<"x2=\""<<x+10<<"\" "<<"y2=\""<<y<<"\" "<<"style=\"stroke:rgb(255,0,0);stroke-width:2\" />"<<endl;
-	ofile<<"<line x1=\""<<x+10<<"\" "<<"y1=\""<<y-9<<"\" "<<"x2=\""<<x+10<<"\" "<<"y2=\""<<y+9<<"\" "<<"style=\"stroke:rgb(255,0,0);stroke-width:2\" />"<<endl;
-	ofile<<"<line x1=\""<<x+15<<"\" "<<"y1=\""<<y-9<<"\" "<<"x2=\""<<x+15<<"\" "<<"y2=\""<<y+9<<"\" "<<"style=\"stroke:rgb(255,0,0);stroke-width:2\" />"<<endl;
-	ofile<<"<line x1=\""<<x+15<<"\" "<<"y1=\""<<y<<"\" "<<"x2=\""<<x+25<<"\" "<<"y2=\""<<y<<"\" "<<"style=\"stroke:rgb(255,0,0);stroke-width:2\" />"<<endl;
+	ofile<<"<line x1=\""<<x<<"\" "<<"y1=\""<<y<<"\" "<<"x2=\""<<x+7.5<<"\" "<<"y2=\""<<y<<"\" "<<"style=\"stroke:rgb(0,0,0);stroke-width:2\" />"<<endl;
+	ofile<<"<line x1=\""<<x+7.5<<"\" "<<"y1=\""<<y-20<<"\" "<<"x2=\""<<x+7.5<<"\" "<<"y2=\""<<y+20<<"\" "<<"style=\"stroke:rgb(0,0,0);stroke-width:2\" />"<<endl;
+	ofile<<"<line x1=\""<<x+17.5<<"\" "<<"y1=\""<<y-20<<"\" "<<"x2=\""<<x+17.5<<"\" "<<"y2=\""<<y+20<<"\" "<<"style=\"stroke:rgb(0,0,0);stroke-width:2\" />"<<endl;
+	ofile<<"<line x1=\""<<x+17.5<<"\" "<<"y1=\""<<y<<"\" "<<"x2=\""<<x+25<<"\" "<<"y2=\""<<y<<"\" "<<"style=\"stroke:rgb(0,0,0);stroke-width:2\" />"<<endl;
 }
 
 
 void Indc(int x,int y){
 
 
-	ofile<<"<path d=\"M"<<x<<","<<y<<" a1,1 0 0,0 10,0\" fill=\"none\" stroke=\"green\" stroke-width=\"3\" />" ;
-	ofile<<"<path d=\"M"<<x+10<<","<<y<<" a1,1 0 0,0 10,0\" fill=\"none\" stroke=\"green\" stroke-width=\"3\" />" ;
-	ofile<<"<path d=\"M"<<x+20<<","<<y<<" a1,1 0 0,0 10,0\" fill=\"none\" stroke=\"green\" stroke-width=\"3\" />" ;
-	ofile<<"<path d=\"M"<<x+30<<","<<y<<" a1,1 0 0,0 10,0\" fill=\"none\" stroke=\"green\" stroke-width=\"3\" />" ;
+	ofile<<"<path d=\"M"<<x<<","<<y<<" a0.5,1 0 0,0 10,0\" fill=\"none\" stroke=\"black\" stroke-width=\"3\" />" ;
+	ofile<<"<path d=\"M"<<x+10<<","<<y<<" a0.5,1 0 0,0 10,0\" fill=\"none\" stroke=\"black\" stroke-width=\"3\" />" ;
+	ofile<<"<path d=\"M"<<x+20<<","<<y<<" a0.5,1 0 0,0 10,0\" fill=\"none\" stroke=\"black\" stroke-width=\"3\" />" ;
+	ofile<<"<path d=\"M"<<x+30<<","<<y<<" a0.5,1 0 0,0 10,0\" fill=\"none\" stroke=\"black\" stroke-width=\"3\" />" ;
 
 }
 
@@ -102,16 +101,16 @@ void Volt(int x,int y,bool side)
 {
   //ofile<<"<text x=\""<<x-1<<"\" y=\""<<y-2<<"\" "<<" fill=\"red\">+"<<"</text>"<<endl;
   ofile<<"<circle cx=\""<<x<<"\"  cy=\""<<y<<"\" r=\"20\" "<<"stroke=\"black\" stroke-width=\"3\" fill=\"none\" />";
-
+  ofile<<"<text x=\""<<x-8<<"\" y=\""<<y+5<<"\" "<<" font-size=\"20\" fill=\"black\">~"<<"</text>"<<endl;
   if(side==true)
   {
-    ofile<<"<text x=\""<<x-30<<"\" y=\""<<y<<"\" "<<" font-size=\"35\" fill=\"green\">+"<<"</text>"<<endl;
-    ofile<<"<text x=\""<<x+30<<"\" y=\""<<y<<"\" "<<" font-size=\"35\" fill=\"green\">-"<<"</text>"<<endl;
+    ofile<<"<text x=\""<<x-35<<"\" y=\""<<y-3<<"\" "<<" font-size=\"20\" fill=\"black\">+"<<"</text>"<<endl;
+    ofile<<"<text x=\""<<x+20<<"\" y=\""<<y-1<<"\" "<<" font-size=\"35\" fill=\"black\">-"<<"</text>"<<endl;
   } 
   else
   {
-    ofile<<"<text x=\""<<x-30<<"\" y=\""<<y<<"\" "<<" font-size=\"35\" fill=\"green\">-"<<"</text>"<<endl;
-    ofile<<"<text x=\""<<x+30<<"\" y=\""<<y<<"\" "<<" font-size=\"35\" fill=\"green\">+"<<"</text>"<<endl;
+    ofile<<"<text x=\""<<x-20<<"\" y=\""<<y-1<<"\" "<<" font-size=\"35\" fill=\"black\">-"<<"</text>"<<endl;
+    ofile<<"<text x=\""<<x+35<<"\" y=\""<<y-3<<"\" "<<" font-size=\"20\" fill=\"black\">+"<<"</text>"<<endl;
 
   }
 
@@ -123,13 +122,13 @@ void Curr(int x,int y,bool side)
   ofile<<"<rect x=\""<<x<<"\" y=\""<<y-5<<"\" width=\"20\" height=\"10\" style=\"fill:none;stroke:black;stroke-width:2;\" />";
 
   if(side==true)
-  { cout<<"1";
+  { 
     ofile<<"<text x=\""<<x-15<<"\" y=\""<<y<<"\" "<<" font-size=\"20\" fill=\"green\">+"<<"</text>"<<endl;
-    ofile<<"<text x=\""<<x+23<<"\" y=\""<<y<<"\" "<<" font-size=\"20\" fill=\"green\">-"<<"</text>"<<endl;
+    ofile<<"<text x=\""<<x+23<<"\" y=\""<<y<<"\" "<<" font-size=\"30\" fill=\"green\">-"<<"</text>"<<endl;
   } 
   else
-  { cout<<"2";
-    ofile<<"<text x=\""<<x-15<<"\" y=\""<<y<<"\" "<<" font-size=\"20\" fill=\"green\">-"<<"</text>"<<endl;
+  { 
+    ofile<<"<text x=\""<<x-15<<"\" y=\""<<y<<"\" "<<" font-size=\"0\" fill=\"green\">-"<<"</text>"<<endl;
     ofile<<"<text x=\""<<x+23<<"\" y=\""<<y<<"\" "<<" font-size=\"20\" fill=\"green\">+"<<"</text>"<<endl;
   }
 
@@ -211,7 +210,7 @@ void drawCap(int net1,int net2,int offset)
 {
 	int diff=abs(net2-net1);
 
-	float l1=(diff-22)/2 ;
+	float l1=(diff-25)/2 ;
 
 	int x=min(net1,net2);
 
@@ -249,7 +248,7 @@ void genmaim() {
   bool N[100];
 
     
-  ofile.open("top.svg");
+  ofile.open("top.html");
   html();
 
   for(int i=0;i<100;i++)
@@ -333,7 +332,7 @@ void genmaim() {
 
   
   
-  int offset=30;
+  int offset=80;
   for(int i=0;i<num;i++)
   {	
   	int a = comp[i].getInitialNet();
@@ -360,7 +359,7 @@ void genmaim() {
 	drawCap(netval[a],netval[b],offset);	
 	else if(comp[i].getType() == 'L')
   drawInd(netval[a],netval[b],offset);
-	offset+= 30;
+	offset+= 80;
 	
 	}
 
@@ -370,7 +369,7 @@ void genmaim() {
 
   }
 
-  int viset=-30;
+  int viset=-80;
   for(int i=0;i<scount;i++)
   {
       int a = sour[i].getInitialNet();
@@ -387,7 +386,7 @@ void genmaim() {
       else if(sour[i].getType() == 'I')
       DrawCurr(netval[a],netval[b],viset);
         
-      viset-= 30;
+      viset-= 80;
   
   
 
@@ -395,6 +394,9 @@ void genmaim() {
       number[b][a]++;
 
   }	
+
+
+
 
   
   footer();
