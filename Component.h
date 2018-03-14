@@ -1,3 +1,4 @@
+#include<string.h>
 class Component
 {
 	private:
@@ -7,6 +8,7 @@ class Component
 		int init_net;
 		int f_net;
 		float value;
+		char* val;
 
 	public:
 
@@ -42,6 +44,16 @@ class Component
 		float getVal()
 		{
 			return value;
+		}
+
+		char* getStrValue()
+		{
+			return val;
+		}
+
+		void setStrValue(char* s)
+		{
+			val=s;
 		}
 
 		char setType(char t)

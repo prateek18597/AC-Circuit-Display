@@ -3,8 +3,9 @@
 #include <sstream>
 #include <string>
 #include <stdlib.h>
-#include<fstream>	
+#include <fstream>	
 #include "Start.h"
+	#include <cstring>
 
 using namespace std;
 %}
@@ -16,9 +17,7 @@ using namespace std;
 	Source sour[10];
 	int c_index=0;
 	int s_index=0;
-	int r=0,l=0,c=0;
-	int inductor[100][4];
-	int capacitor[100][4];
+	bool term=false;
 	void genmaim();
 
 	void show()
@@ -49,9 +48,10 @@ factor [N|U|M|K]?
 unit [F|H]?
 NotUnit (^[ |F|H])
 Position (({net}([0]|([1-9][0-9]*)))|0)
-net Net
+net (Net)|(NET)|(net)
 Decimal (([0-9]+(\.)[0-9]+)|([0-9]*))
-sine (SINE)[ ]*(\(){whitespace}*{Decimal}{whitespace}*{Decimal}{whitespace}*{Decimal}(Khz){whitespace}*{Decimal}(S)[ ]*{Decimal}{whitespace}*(\)){whitespace}
+sine (SINE)[ ]*(\(){whitespace}+{Decimal}{whitespace}*{Decimal}{whitespace}*{Decimal}(Khz){whitespace}*{Decimal}(S)[ ]*{Decimal}{whitespace}*(\)){whitespace}
+sine1 (SINE)[ ]*(\(){Decimal}{whitespace}*{Decimal}{whitespace}*{Decimal}(Khz){whitespace}*{Decimal}(S)[ ]*{Decimal}{whitespace}*(\)){whitespace}
 
 %%
 
@@ -96,7 +96,7 @@ sine (SINE)[ ]*(\(){whitespace}*{Decimal}{whitespace}*{Decimal}{whitespace}*{Dec
 	ss>>t;
 	// cout<<t.substr(0,t.length()-3)<<endl;
 	magnitude=stof(t.substr(0,t.length()-3));
-	
+	sour[s_index].setStrFreq((char*)t.c_str());
 	switch(t[t.length()-3])
 	{
 		case 'K':
@@ -128,6 +128,7 @@ sine (SINE)[ ]*(\(){whitespace}*{Decimal}{whitespace}*{Decimal}{whitespace}*{Dec
 	// cout<<t.substr(0,t.length()-1)<<endl;
 	magnitude=stof(t.substr(0,t.length()-1));
 	sour[s_index].setDelay(magnitude);
+	sour[s_index].setStrDelay((char*)t.c_str());
 	ss>>t;
 	// cout<<t<<endl;
 	magnitude=stof(t);
@@ -227,7 +228,8 @@ sine (SINE)[ ]*(\(){whitespace}*{Decimal}{whitespace}*{Decimal}{whitespace}*{Dec
 
 
 										}
-									}	
+									}
+									comp[c_index].setStrValue((char*)t.c_str());	
 												
 									if(comp[c_index].getInitialNet()==comp[c_index].getFinalNet())
 									{	
@@ -244,11 +246,16 @@ sine (SINE)[ ]*(\(){whitespace}*{Decimal}{whitespace}*{Decimal}{whitespace}*{Dec
 }
 
 x	{
+	if(!term)
 	show();
 }
 
 .	{
-		// cout<<yytext<<endl;
+		term=true;
+		cout<<"Input File has some error."<<endl;
+		exit(1);
+
+		
 }
 
 
@@ -263,7 +270,9 @@ int main(int argc, char* argv[])
         yyin = fh;
 
     yylex();
-    genmaim();
-    
-	return 0;
+    if(!term){
+    	genmaim();
+    	return 0;
+    }
+    return 0;
 } 

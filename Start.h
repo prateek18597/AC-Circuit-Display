@@ -55,7 +55,7 @@ void line(int x,int y,int length,char c,int color)
    if(c=='h')		 
    ofile<<"<line x1=\""<<x<<"\" "<<"y1=\""<<y<<"\" "<<"x2=\""<<x+length<<"\" "<<"y2=\""<<y<<"\" "<<"style=\"stroke:rgb(0,0,0);stroke-width:2\" />"<<endl;
    else
-   ofile<<"<line x1=\""<<x<<"\" "<<"y1=\""<<y<<"\" "<<"x2=\""<<x<<"\" "<<"y2=\""<<y+length<<"\" "<<"style=\"stroke:rgb(255,0,0);stroke-width:2\" />"<<endl; 		
+   ofile<<"<line x1=\""<<x<<"\" "<<"y1=\""<<y<<"\" "<<"x2=\""<<x<<"\" "<<"y2=\""<<y+length<<"\" "<<"style=\"stroke:rgb(0,0,0);stroke-width:2\" />"<<endl; 		
   
   }
   else
@@ -64,7 +64,7 @@ void line(int x,int y,int length,char c,int color)
    if(c=='h')		 
    ofile<<"<line x1=\""<<x<<"\" "<<"y1=\""<<y<<"\" "<<"x2=\""<<x+length<<"\" "<<"y2=\""<<y<<"\" "<<"style=\"stroke:rgb(0,0,0);stroke-width:2\" />"<<endl;
    else
-   ofile<<"<line x1=\""<<x<<"\" "<<"y1=\""<<y<<"\" "<<"x2=\""<<x<<"\" "<<"y2=\""<<y+length<<"\" "<<"style=\"stroke:rgb(0,0,255);stroke-width:2\" />"<<endl;
+   ofile<<"<line x1=\""<<x<<"\" "<<"y1=\""<<y<<"\" "<<"x2=\""<<x<<"\" "<<"y2=\""<<y+length<<"\" "<<"style=\"stroke:rgb(0,0,0);stroke-width:2\" />"<<endl;
   
   }	
 
@@ -74,7 +74,7 @@ void resistor(int x, int y,float nu,int val) {
   
 
     ofile<<"<path d=\"M"<<x<<" "<<y<<" L"<<x+5<<" "<<y+10<<" L"<<x+10<<" "<<y<<" L"<<x+15<<" "<<y+10<<" L"<<x+20<<" "<<y<<" L"<<x+25<<" "<<y+10<<" L"<<x+30<<" "<<y<<"\" stroke=\"black\" fill=\"none\" stroke-width=\"3\"  /> "<<endl;
-    ofile<<"<text x=\""<<x+10<<"\" y=\""<<y-4<<"\" fill=\"black\">r"<<nu<<"="<<val<<"Ohm </text>";
+//    ofile<<"<text x=\""<<x+10<<"\" y=\""<<y-4<<"\" fill=\"black\">r"<<nu<<"="<<val<<"Ohm </text>";
 }
 
 void capc(int x,int y){
@@ -109,7 +109,8 @@ void Volt(int x,int y,bool side)
   } 
   else
   {
-    ofile<<"<text x=\""<<x-20<<"\" y=\""<<y-1<<"\" "<<" font-size=\"35\" fill=\"black\">-"<<"</text>"<<endl;
+
+    ofile<<"<text x=\""<<x-35<<"\" y=\""<<y-1<<"\" "<<" font-size=\"35\" fill=\"black\">-"<<"</text>"<<endl;
     ofile<<"<text x=\""<<x+35<<"\" y=\""<<y-3<<"\" "<<" font-size=\"20\" fill=\"black\">+"<<"</text>"<<endl;
 
   }
@@ -117,22 +118,32 @@ void Volt(int x,int y,bool side)
 }
 
 
+
+
 void Curr(int x,int y,bool side)
 {
-  ofile<<"<rect x=\""<<x<<"\" y=\""<<y-5<<"\" width=\"20\" height=\"10\" style=\"fill:none;stroke:black;stroke-width:2;\" />";
+  ofile<<"<rect x=\""<<x<<"\" y=\""<<y-10<<"\" width=\"20\" height=\"20\" style=\"fill:none;stroke:black;stroke-width:2;\" />";
 
   if(side==true)
   { 
-    ofile<<"<text x=\""<<x-15<<"\" y=\""<<y<<"\" "<<" font-size=\"20\" fill=\"green\">+"<<"</text>"<<endl;
-    ofile<<"<text x=\""<<x+23<<"\" y=\""<<y<<"\" "<<" font-size=\"30\" fill=\"green\">-"<<"</text>"<<endl;
+    ofile<<"<text x=\""<<x-15<<"\" y=\""<<y<<"\" "<<" font-size=\"20\" fill=\"black\">+"<<"</text>"<<endl;
+    ofile<<"<text x=\""<<x+23<<"\" y=\""<<y<<"\" "<<" font-size=\"30\" fill=\"black\">-"<<"</text>"<<endl;
   } 
   else
   { 
-    ofile<<"<text x=\""<<x-15<<"\" y=\""<<y<<"\" "<<" font-size=\"0\" fill=\"green\">-"<<"</text>"<<endl;
-    ofile<<"<text x=\""<<x+23<<"\" y=\""<<y<<"\" "<<" font-size=\"20\" fill=\"green\">+"<<"</text>"<<endl;
+    ofile<<"<text x=\""<<x-15<<"\" y=\""<<y<<"\" "<<" font-size=\"30\" fill=\"black\">-"<<"</text>"<<endl;
+    ofile<<"<text x=\""<<x+23<<"\" y=\""<<y<<"\" "<<" font-size=\"20\" fill=\"black\">+"<<"</text>"<<endl;
   }
 
 }
+
+
+
+
+
+
+
+
 
 
 void DrawCurr(int net1,int net2,int offset)
@@ -186,7 +197,7 @@ void DrawVolt(int net1,int net2,int offset)
 
 
 
-void drawRes(int net1,int net2,int offset,int n,float val)
+void drawRes(int net1,int net2,int offset,int n,float val,char* c)
 {
     int diff=abs(net2-net1);
 
@@ -199,18 +210,18 @@ void drawRes(int net1,int net2,int offset,int n,float val)
     resistor(x+l1,250+offset,n,val);
     line(x+l1+30,250+offset,l1,'h',1);
 
-
+    ofile<<"<text x=\""<<x+l1+10<<"\" y=\""<<246+offset<<"\" fill=\"black\">r"<<n<<"="<<c<<"Ohm </text>";
    line(net1,250,offset,'v',0);
    line(net2,250,offset,'v',0);
     
 }
- 
+  
 
 void drawCap(int net1,int net2,int offset)
 {
 	int diff=abs(net2-net1);
 
-	float l1=(diff-25)/2 ;
+	float l1=(diff-22)/2 ;
 
 	int x=min(net1,net2);
 
@@ -321,10 +332,11 @@ void genmaim() {
     if(N[i]==true)
     {
       if(i!=0)
-      ofile<<"<text x=\""<<netval[i]<<"\" y=\"248\" "<<" fill=\"red\">net"<<i-1<<"</text>"<<endl; 
+      ofile<<"<text x=\""<<netval[i]<<"\" y=\"248\" "<<" fill=\"black\">net"<<i-1<<"</text>"<<endl; 
       else
-      ofile<<"<text x=\""<<netval[i]<<"\" y=\"248\" "<<" fill=\"red\">0"<<"</text>"<<endl;  
+      ofile<<"<text x=\""<<netval[i]<<"\" y=\"248\" "<<" fill=\"black\">0"<<"</text>"<<endl;  
 
+      ofile<<"<text x=\""<<netval[i]-10<<"\" y=\"250\" "<<" font-size=\"60\" fill=\"blue\">."<<"</text>"<<endl;
     }  
 
   }
@@ -338,13 +350,16 @@ void genmaim() {
   	int a = comp[i].getInitialNet();
   	int b = comp[i].getFinalNet();
 
-  	int in=comp[i].getNum();
+    char* c=comp[i].getStrValue();
+    cout<<comp[i].getStrValue();
+  	
+    int in=comp[i].getNum();
   	float val =comp[i].getVal();
   		
   	if( abs(netval[a] - netval[b]) == 300  &&  number[a][b]==0 ){
 
   	if(comp[i].getType() == 'R')
-	  drawRes(netval[a],netval[b],0,in,val);
+	  drawRes(netval[a],netval[b],0,in,val,c);
 	  else if(comp[i].getType() == 'C')
 	  drawCap(netval[a],netval[b],0);	
 	  else if(comp[i].getType() == 'L')
@@ -354,7 +369,7 @@ void genmaim() {
 	else{
 
 	if(comp[i].getType() == 'R')
-	drawRes(netval[a],netval[b],offset,in,val);
+	drawRes(netval[a],netval[b],offset,in,val,c);
 	else if(comp[i].getType() == 'C')
 	drawCap(netval[a],netval[b],offset);	
 	else if(comp[i].getType() == 'L')
