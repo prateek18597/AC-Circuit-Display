@@ -1,11 +1,14 @@
 #ifndef START_H
 #define START_H
 #include "Component.h"
+#include "Source.h"
 #include <iostream>
 #include <fstream>
 using namespace std;
 #include <vector>
 
+extern Source sour[10];
+extern int s_index;
 extern Component comp[100];
 extern int c_index;
 ofstream ofile;
@@ -27,17 +30,21 @@ void close()
   ofile<<"</html>\n";
 
 }
+
 void header(int numnets) {
  
 
 ofile<<"<svg height=\""<<500<<"\" width=\""<<1000<<"\">"<<endl;
  // height corresponds to vertical and width is horizontal
+
 }
+
 // Epilog for the SVG image
 
 void footer() {
   ofile << "</svg>" << endl;
 }
+
 
 // Generation of the two segments
 
@@ -91,9 +98,92 @@ void Indc(int x,int y){
 }
 
 
+void Volt(int x,int y,bool side)
+{
+  //ofile<<"<text x=\""<<x-1<<"\" y=\""<<y-2<<"\" "<<" fill=\"red\">+"<<"</text>"<<endl;
+  ofile<<"<circle cx=\""<<x<<"\"  cy=\""<<y<<"\" r=\"20\" "<<"stroke=\"black\" stroke-width=\"3\" fill=\"none\" />";
+
+  if(side==true)
+  {
+    ofile<<"<text x=\""<<x-30<<"\" y=\""<<y<<"\" "<<" font-size=\"35\" fill=\"green\">+"<<"</text>"<<endl;
+    ofile<<"<text x=\""<<x+30<<"\" y=\""<<y<<"\" "<<" font-size=\"35\" fill=\"green\">-"<<"</text>"<<endl;
+  } 
+  else
+  {
+    ofile<<"<text x=\""<<x-30<<"\" y=\""<<y<<"\" "<<" font-size=\"35\" fill=\"green\">-"<<"</text>"<<endl;
+    ofile<<"<text x=\""<<x+30<<"\" y=\""<<y<<"\" "<<" font-size=\"35\" fill=\"green\">+"<<"</text>"<<endl;
+
+  }
+
+}
 
 
+void Curr(int x,int y,bool side)
+{
+  ofile<<"<rect x=\""<<x<<"\" y=\""<<y-5<<"\" width=\"20\" height=\"10\" style=\"fill:none;stroke:black;stroke-width:2;\" />";
 
+  if(side==true)
+  { cout<<"1";
+    ofile<<"<text x=\""<<x-15<<"\" y=\""<<y<<"\" "<<" font-size=\"20\" fill=\"green\">+"<<"</text>"<<endl;
+    ofile<<"<text x=\""<<x+23<<"\" y=\""<<y<<"\" "<<" font-size=\"20\" fill=\"green\">-"<<"</text>"<<endl;
+  } 
+  else
+  { cout<<"2";
+    ofile<<"<text x=\""<<x-15<<"\" y=\""<<y<<"\" "<<" font-size=\"20\" fill=\"green\">-"<<"</text>"<<endl;
+    ofile<<"<text x=\""<<x+23<<"\" y=\""<<y<<"\" "<<" font-size=\"20\" fill=\"green\">+"<<"</text>"<<endl;
+  }
+
+}
+
+
+void DrawCurr(int net1,int net2,int offset)
+{
+  int diff=abs(net1-net2);
+
+  float l1=(diff-20)/2 ;
+
+  int x=min(net1,net2);
+
+   bool side;
+
+  if(x==net1)
+  side=true;  
+  else
+  side=false;
+
+  line(x,250+offset,l1,'h',1);
+  Curr(x+l1,250+offset,side);
+  line(x+l1+20,250+offset,l1,'h',1);
+
+  line(net1,250,offset,'v',0);
+  line(net2,250,offset,'v',0); 
+
+}
+
+
+void DrawVolt(int net1,int net2,int offset)
+{
+  int diff=abs(net2-net1);
+
+  float l1=(diff-40)/2 ;
+
+  int x=min(net1,net2);
+
+  bool side;
+
+  if(x==net1)
+  side=true;  
+  else
+  side=false;
+
+  line(x,250+offset,l1,'h',1);
+  Volt(x+l1+20,250+offset,side);
+  line(x+l1+40,250+offset,l1,'h',1);
+
+  line(net1,250,offset,'v',0);
+  line(net2,250,offset,'v',0);  
+
+}
 
 
 
@@ -175,6 +265,7 @@ void genmaim() {
   
 
   int num=c_index;
+  int scount=s_index;
 
   int number[100][100];
   
@@ -274,8 +365,34 @@ void genmaim() {
 	}
 
 	number[a][b]++;
-  	number[b][a]++;
+  number[b][a]++;
 
+
+  }
+
+  int viset=-30;
+  for(int i=0;i<scount;i++)
+  {
+      int a = sour[i].getInitialNet();
+      int b = sour[i].getFinalNet();
+
+     // int in = sour[i].getNum();
+     // float val = sour[i].getVal();
+      
+      
+      
+
+      if( sour[i].getType() == 'V' )
+      DrawVolt(netval[a],netval[b],viset);  
+      else if(sour[i].getType() == 'I')
+      DrawCurr(netval[a],netval[b],viset);
+        
+      viset-= 30;
+  
+  
+
+      number[a][b]++;
+      number[b][a]++;
 
   }	
 
