@@ -26,6 +26,7 @@ using namespace std;
 		for(int i=0;i<c_index;i++)
 		{
 			cout<<comp[i].getType()<<" "<<comp[i].getNum()<<" "<<comp[i].getInitialNet()<<" "<<comp[i].getFinalNet()<<" "<<comp[i].getVal()<<endl;
+			//cout<<comp[i].getStrValue()<<endl;
 		}
 		cout<<"Source Count: "<<s_index<<endl;
 		for(int i=0;i<s_index;i++)
@@ -50,12 +51,12 @@ NotUnit (^[ |F|H])
 Position (({net}([0]|([1-9][0-9]*)))|0)
 net (Net)|(NET)|(net)
 Decimal (([0-9]+(\.)[0-9]+)|([0-9]*))
-sine (SINE)[ ]*(\(){whitespace}+{Decimal}{whitespace}*{Decimal}{whitespace}*{Decimal}(Khz){whitespace}*{Decimal}(S)[ ]*{Decimal}{whitespace}*(\)){whitespace}
+sine (SINE)[ ]*(\(){whitespace}+{Decimal}{whitespace}+{Decimal}{whitespace}+{Decimal}(Khz){whitespace}+{Decimal}(S)[ ]+{Decimal}{whitespace}+(\)){whitespace}
 sine1 (SINE)[ ]*(\(){Decimal}{whitespace}*{Decimal}{whitespace}*{Decimal}(Khz){whitespace}*{Decimal}(S)[ ]*{Decimal}{whitespace}*(\)){whitespace}
 
 %%
 
-{Source}{whitespace}*{Position}{whitespace}{Position}{whitespace}{sine}{whitespace}* {
+{whitespace}*{Source}{whitespace}*{Position}{whitespace}{Position}{whitespace}{sine}{whitespace}* {
 
 	string temp=yytext;
 	istringstream ss(temp);
@@ -97,6 +98,7 @@ sine1 (SINE)[ ]*(\(){Decimal}{whitespace}*{Decimal}{whitespace}*{Decimal}(Khz){w
 	// cout<<t.substr(0,t.length()-3)<<endl;
 	magnitude=stof(t.substr(0,t.length()-3));
 	sour[s_index].setStrFreq((char*)t.c_str());
+
 	switch(t[t.length()-3])
 	{
 		case 'K':
@@ -144,7 +146,7 @@ sine1 (SINE)[ ]*(\(){Decimal}{whitespace}*{Decimal}{whitespace}*{Decimal}(Khz){w
 									
 }
 
-{Component}{whitespace}*{Position}{whitespace}*{Position}{whitespace}*[1-9][0-9]*{factor}{unit}[ ]*[\n]    {
+{whitespace}*{Component}{whitespace}*{Position}{whitespace}*{Position}{whitespace}*[1-9][0-9]*{factor}{unit}{whitespace}*    {
 
 									string temp=yytext;
 									istringstream ss(temp);
@@ -230,7 +232,7 @@ sine1 (SINE)[ ]*(\(){Decimal}{whitespace}*{Decimal}{whitespace}*{Decimal}(Khz){w
 										}
 									}
 									comp[c_index].setStrValue((char*)t.c_str());	
-												
+									//cout<<comp[c_index].getStrValue()<<endl;			
 									if(comp[c_index].getInitialNet()==comp[c_index].getFinalNet())
 									{	
 										cout<<"Both Net can't be same in "<<yytext;
@@ -252,7 +254,8 @@ x	{
 
 .	{
 		term=true;
-		cout<<"Input File has some error."<<endl;
+		// cout<<yytext;
+		cout<<"\"Input File has some error.So Circuit might not be complete.\""<<endl;
 		exit(1);
 
 		
@@ -270,9 +273,9 @@ int main(int argc, char* argv[])
         yyin = fh;
 
     yylex();
-    if(!term){
+    // if(!term){
     	genmaim();
     	return 0;
-    }
-    return 0;
+    // }
+    // return 0;
 } 

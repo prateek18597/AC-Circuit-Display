@@ -34,7 +34,7 @@ void close()
 void header(int numnets) {
  
 
-ofile<<"<svg height=\""<<1000<<"\" width=\""<<1000<<"\">"<<endl;
+ofile<<"<svg height=\""<<2000<<"\" width=\""<<2000<<"\">"<<endl;
  // height corresponds to vertical and width is horizontal
 
 }
@@ -210,14 +210,14 @@ void drawRes(int net1,int net2,int offset,int n,float val,char* c)
     resistor(x+l1,250+offset,n,val);
     line(x+l1+30,250+offset,l1,'h',1);
 
-    ofile<<"<text x=\""<<x+l1+10<<"\" y=\""<<246+offset<<"\" fill=\"black\">r"<<n<<"="<<c<<"Ohm </text>";
+   ofile<<"<text x=\""<<x+l1+10<<"\" y=\""<<246+offset<<"\" fill=\"black\">R"<<n<<"="<<val<<"Ohm </text>";
    line(net1,250,offset,'v',0);
    line(net2,250,offset,'v',0);
     
 }
   
 
-void drawCap(int net1,int net2,int offset)
+void drawCap(int net1,int net2,int offset,int n,float val)
 {
 	int diff=abs(net2-net1);
 
@@ -225,17 +225,18 @@ void drawCap(int net1,int net2,int offset)
 
 	int x=min(net1,net2);
 
- 	line(x,250+offset,l1,'h',1);
+ 	  line(x,250+offset,l1,'h',1);
     capc(x+l1,250+offset);
     line(x+l1+22,250+offset,l1,'h',1);
 	
+    ofile<<"<text x=\""<<x+l1+20<<"\" y=\""<<246+offset<<"\" fill=\"black\">C"<<n<<"="<<val<<"F</text>";
 
     line(net1,250,offset,'v',0);
     line(net2,250,offset,'v',0); 
 
 }
 
-void drawInd(int net1,int net2,int offset)
+void drawInd(int net1,int net2,int offset,int n,float val)
 {
 
 	int diff=abs(net2-net1);
@@ -246,6 +247,8 @@ void drawInd(int net1,int net2,int offset)
 	line(x,250+offset,l1,'h',1);
     Indc(x+l1,250+offset);
     line(x+l1+40,250+offset,l1,'h',1);
+
+  ofile<<"<text x=\""<<x+l1+20<<"\" y=\""<<246+offset<<"\" fill=\"black\">L"<<n<<"="<<val<<"F</text>";
 
    line(net1,250,offset,'v',0);
    line(net2,250,offset,'v',0); 
@@ -355,15 +358,15 @@ void genmaim() {
   	
     int in=comp[i].getNum();
   	float val =comp[i].getVal();
-  		
+	    		
   	if( abs(netval[a] - netval[b]) == 300  &&  number[a][b]==0 ){
 
   	if(comp[i].getType() == 'R')
 	  drawRes(netval[a],netval[b],0,in,val,c);
 	  else if(comp[i].getType() == 'C')
-	  drawCap(netval[a],netval[b],0);	
+	  drawCap(netval[a],netval[b],0,in,val);	
 	  else if(comp[i].getType() == 'L')
-    drawInd(netval[a],netval[b],0);
+    drawInd(netval[a],netval[b],0,in,val);
 
 	}
 	else{
@@ -371,9 +374,9 @@ void genmaim() {
 	if(comp[i].getType() == 'R')
 	drawRes(netval[a],netval[b],offset,in,val,c);
 	else if(comp[i].getType() == 'C')
-	drawCap(netval[a],netval[b],offset);	
+	drawCap(netval[a],netval[b],offset,in,val);	
 	else if(comp[i].getType() == 'L')
-  drawInd(netval[a],netval[b],offset);
+  drawInd(netval[a],netval[b],offset,in,val);
 	offset+= 80;
 	
 	}
@@ -390,20 +393,30 @@ void genmaim() {
       int a = sour[i].getInitialNet();
       int b = sour[i].getFinalNet();
 
-     // int in = sour[i].getNum();
-     // float val = sour[i].getVal();
+     
       
-      
-      
+     float dco=sour[i].getDCO();
+     float amp=sour[i].getAmpli();
+     float delay=sour[i].getDelay();
+     float freq=sour[i].getFreq();  
+     float damp=sour[i].getDamp();   
+
+    
+
 
       if( sour[i].getType() == 'V' )
       DrawVolt(netval[a],netval[b],viset);  
       else if(sour[i].getType() == 'I')
       DrawCurr(netval[a],netval[b],viset);
-        
+      
+      float d= abs(netval[a]-netval[b]);
+      d=d/2;
+      d=min(netval[a],netval[b]) + d;
+      ofile<<"<text x=\""<<d-2<<"\" y=\""<<225+viset<<"\" fill=\"black\"> SINE("<<dco<<" "<<amp<<" "<<freq<<"Hz "<<delay<<" "<<damp<<") </text>";
+
       viset-= 80;
   
-  
+    //SINE ( < DCOf f set> < Amplitude> < F requency> < Delay> < DampingF actor>)
 
       number[a][b]++;
       number[b][a]++;
