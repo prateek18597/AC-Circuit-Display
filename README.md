@@ -20,6 +20,13 @@ Source Class: This class abstracts information about Voltage and current source 
 
 ###Viewing Circuit
 
-Open index.html file to see circuit in web browser.
-To view image in Image Viewer ,simply click on the top.svg file.
+Open top.html file to see circuit in web browser.
 
+##Sample Input
+
+R1 Net3 0 10K 
+C1 Net2 Net3 100NF 
+L1 Net1 Net2 10NH 
+V1 Net1 0 SINE ( 0.0 1.0 10Khz 0.0S 0.0 )
+                ^                      ^
+Space is compulsory here(^),after and before paranthesis.

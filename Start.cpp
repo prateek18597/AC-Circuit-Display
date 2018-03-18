@@ -26,7 +26,7 @@ using namespace std;
 		for(int i=0;i<c_index;i++)
 		{
 			cout<<comp[i].getType()<<" "<<comp[i].getNum()<<" "<<comp[i].getInitialNet()<<" "<<comp[i].getFinalNet()<<" "<<comp[i].getVal()<<endl;
-			// cout<<comp[i].getStrValue()<<endl;
+
 		}
 		cout<<"Source Count: "<<s_index<<endl;
 		for(int i=0;i<s_index;i++)
@@ -51,7 +51,7 @@ NotUnit (^[ |F|H])
 Position (({net}([0]|([1-9][0-9]*)))|0)
 net (Net)|(NET)|(net)
 Decimal (([0-9]+(\.)[0-9]+)|([0-9]*))
-sine (SINE)[ ]*(\(){whitespace}+{Decimal}{whitespace}*{Decimal}{whitespace}*{Decimal}(Khz){whitespace}*{Decimal}(S)[ ]*{Decimal}{whitespace}*(\)){whitespace}
+sine (SINE)[ ]*(\(){whitespace}+{Decimal}{whitespace}+{Decimal}{whitespace}+{Decimal}(Khz){whitespace}+{Decimal}(S)[ ]+{Decimal}{whitespace}+(\)){whitespace}
 sine1 (SINE)[ ]*(\(){Decimal}{whitespace}*{Decimal}{whitespace}*{Decimal}(Khz){whitespace}*{Decimal}(S)[ ]*{Decimal}{whitespace}*(\)){whitespace}
 
 %%
@@ -236,7 +236,9 @@ sine1 (SINE)[ ]*(\(){Decimal}{whitespace}*{Decimal}{whitespace}*{Decimal}(Khz){w
 
 										}
 									}
-									// cout<<comp[c_index].getStrValue()<<endl;			
+
+									comp[c_index].setStrValue((char*)t.c_str());	
+						
 									if(comp[c_index].getInitialNet()==comp[c_index].getFinalNet())
 									{	
 										cout<<"Both Net can't be same in "<<yytext;
@@ -258,9 +260,9 @@ x	{
 
 .	{
 		term=true;
-		cout<<yytext;
-		// cout<<"Input File has some error.So Circuit might not be complete."<<endl;
-		// exit(1);
+		// cout<<yytext;
+		cout<<"\"Input File has some error.So Circuit might not be complete.\""<<endl;
+		exit(1);
 
 		
 }
