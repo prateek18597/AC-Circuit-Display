@@ -26,7 +26,7 @@ using namespace std;
 		for(int i=0;i<c_index;i++)
 		{
 			cout<<comp[i].getType()<<" "<<comp[i].getNum()<<" "<<comp[i].getInitialNet()<<" "<<comp[i].getFinalNet()<<" "<<comp[i].getVal()<<endl;
-			cout<<comp[i].getStrValue()<<endl;
+			// cout<<comp[i].getStrValue()<<endl;
 		}
 		cout<<"Source Count: "<<s_index<<endl;
 		for(int i=0;i<s_index;i++)
@@ -175,6 +175,11 @@ sine1 (SINE)[ ]*(\(){Decimal}{whitespace}*{Decimal}{whitespace}*{Decimal}(Khz){w
 									}
 									temp+=(t+" ");
 									ss>>t;
+									// cout<<t<<endl;
+									// char* xx=(char*)(t.c_str());
+									// cout<<xx<<endl;
+									comp[c_index].setStrValue((char*)(t.c_str()));	
+									
 									if(t[t.length()-1]=='H' || t[t.length()-1]=='F')
 									{
 										switch(t[t.length()-2])
@@ -231,8 +236,7 @@ sine1 (SINE)[ ]*(\(){Decimal}{whitespace}*{Decimal}{whitespace}*{Decimal}(Khz){w
 
 										}
 									}
-									comp[c_index].setStrValue((char*)t.c_str());	
-									cout<<comp[c_index].getStrValue()<<endl;			
+									// cout<<comp[c_index].getStrValue()<<endl;			
 									if(comp[c_index].getInitialNet()==comp[c_index].getFinalNet())
 									{	
 										cout<<"Both Net can't be same in "<<yytext;

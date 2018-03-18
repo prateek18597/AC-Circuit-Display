@@ -12,14 +12,14 @@ class Component
 
 	public:
 
-		// void input(char t,int c,int i,int f,float v)
-		// {
-		// 	type=t;
-		// 	cNum=c;
-		// 	init_net=i;
-		// 	f_net=f;
-		// 	value=v;
-		// }
+		void input(char t,int c,int i,int f,float v)
+		{
+			type=t;
+			cNum=c;
+			init_net=i;
+			f_net=f;
+			value=v;
+		}
 
 		char getType()
 		{

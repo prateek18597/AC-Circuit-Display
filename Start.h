@@ -4,6 +4,7 @@
 #include "Source.h"
 #include <iostream>
 #include <fstream>
+#include<string>
 using namespace std;
 #include <vector>
 
@@ -343,10 +344,13 @@ void genmaim() {
 
   	int in=comp[i].getNum();
   	float val =comp[i].getVal();
-	cout<<comp[i].getStrValue()<<endl;  		
+  	char* xyz=comp[i].getStrValue();
+	// bool bo=xyz==" "
+	cout<<xyz<<endl;  		
+  
   	if( abs(netval[a] - netval[b]) == 300  &&  number[a][b]==0 ){
 
-  	if(comp[i].getType() == 'R')
+  	if(comp[i].getType()=='R')
 	  drawRes(netval[a],netval[b],0,in,val);
 	  else if(comp[i].getType() == 'C')
 	  drawCap(netval[a],netval[b],0);	
