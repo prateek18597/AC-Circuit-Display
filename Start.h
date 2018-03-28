@@ -286,7 +286,7 @@ void genmaim() {
   for(int i=0;i<100;i++)
   {
   	for(int j=0;j<100;j++)
-  	number[i][j]=0;	
+  	   number[i][j]=0;	
 
   }
 
@@ -296,27 +296,23 @@ void genmaim() {
 
   for(int i=0;i<num;i++)
   {
-  	int a = comp[i].getInitialNet();
-  	int b = comp[i].getFinalNet();
+      	int a = comp[i].getInitialNet();
+      	int b = comp[i].getFinalNet();
 
-  	
-  	if(N[a]==false)
-  	{	
-  		netval[a]=s;
-  		N[a]=true;
-  		s+=300;
+      	
+      	if(N[a]==false)
+      	{	
+      		netval[a]=s;
+      		N[a]=true;
+      		s+=300;
+      	}	
 
-  	}	
-
-  	if(N[b]==false)
-  	{
-  		netval[b]=s;
-  		N[b]=true;
-  		s+=300;
-
-  	}	
-
-
+      	if(N[b]==false)
+      	{
+      		netval[b]=s;
+      		N[b]=true;
+      		s+=300;
+      	}	
   }
 	
   int numnets=0;

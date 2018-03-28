@@ -5,14 +5,15 @@
 #include <stdlib.h>
 #include <fstream>	
 #include "Start.h"
-	#include <cstring>
-
+#include <cstring>
+#include "Net.h"
 using namespace std;
 %}
 %option noyywrap
 
 %{
 
+	Net net[100];
 	Component comp[100];
 	Source sour[10];
 	int c_index=0;
@@ -141,9 +142,9 @@ sine1 (SINE)[ ]*(\(){Decimal}{whitespace}*{Decimal}{whitespace}*{Decimal}(Khz){w
 		sour[s_index].clear();
 	}
 	else
-		s_index++;
-	
-									
+	{	s_index++;
+		net[sour[s_index-1].getInitialNet()].addSour(sour[s_index-1]);
+	}								
 }
 
 {whitespace}*{Component}{whitespace}*{Position}{whitespace}*{Position}{whitespace}*[1-9][0-9]*{factor}{unit}{whitespace}*    {
@@ -248,6 +249,7 @@ sine1 (SINE)[ ]*(\(){Decimal}{whitespace}*{Decimal}{whitespace}*{Decimal}(Khz){w
 									else
 									{
 										c_index++;
+										net[comp[c_index-1].getInitialNet()].addComp(comp[c_index-1]);
 									}	
 
 									
