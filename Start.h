@@ -17,7 +17,14 @@ ofstream ofile;
 void html()
 {
     ofile<<"<html>\n";
-    ofile<<"<body>\n";
+    ofile<<"<head><title>AC Circuit Solver</title>\n";
+    ofile<<"<script type=\"text/javascript\" src=\"svg-pan-zoom.js\">\n";
+    
+    ofile<<"</script>\n";
+    ofile<<"<script type=\"text/javascript\" src=\"script.js\">\n";
+    ofile<<"</script>\n";
+    
+    ofile<<"</head><body>\n";
     ofile<<"<style>\n";
     ofile<<"body{\n";
     ofile<<"background-color: #93B874;\n";
@@ -35,7 +42,14 @@ void close()
 void header(int numnets) {
  
 
-ofile<<"<svg height=\""<<2000<<"\" width=\""<<2000<<"\">"<<endl;
+// ofile<<"<svg height=\""<<2000<<"\" width=\""<<2000<<"\">"<<endl;
+ofile<<"<div id=\"container\" style=\"width: 1400px; height: 700px;\">\n";
+ofile<<"<svg id=\"circuit\" xmlns=\"http://www.w3.org/2000/svg\"";
+ofile<<"style=\"overflow: hidden; display: inline; width: inherit;";
+ofile<<"min-width: inherit; max-width: inherit; height: inherit;";
+ofile<<"min-height: inherit; max-height: inherit; \" version=\"1.1\"";
+ofile<<"xmlns:xlink=\"http://www.w3.org/1999/xlink\"";
+ofile<<"xmlns:ev=\"http://www.w3.org/2001/xml-events\">\n";
  // height corresponds to vertical and width is horizontal
 
 }
@@ -43,7 +57,8 @@ ofile<<"<svg height=\""<<2000<<"\" width=\""<<2000<<"\">"<<endl;
 // Epilog for the SVG image
 
 void footer() {
-  ofile << "</svg>" << endl;
+  ofile << "</svg>\n</div>" << endl;
+  ofile<<"<div id=\"selenium-highlight\"></div>\n";
 }
 
 

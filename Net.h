@@ -12,14 +12,12 @@ class Net
 		void addComp(Component c)
 		{
 			C[cCount]=(c);
-			// C[cCount].setConnectedNet(c.getFinalNet());
 			cCount++;
 
 		}
 		void addSour(Source s)
 		{
 			S[sCount]=(s);
-			// S[sCount].setConnectedNet(s.getFinalNet());
 			sCount++;
 		}
 		int getSourceCount()
