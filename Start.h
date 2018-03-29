@@ -2,12 +2,14 @@
 #define START_H
 #include "Component.h"
 #include "Source.h"
+#include "Net.h"
 #include <iostream>
 #include <fstream>
 #include<string>
 using namespace std;
 #include <vector>
 
+extern Net net[100];
 extern Source sour[10];
 extern int s_index;
 extern Component comp[100];
