@@ -1,6 +1,7 @@
 class Source
 {
 	private:
+		int id;
 		char type;
 		int num;
 		int initialNet;
@@ -14,6 +15,16 @@ class Source
 		float damp;
 	public:
 		
+		int getId()
+		{
+			return id;
+		}
+
+		void setId(int i)
+		{
+			id=i;
+		}
+
 		char getType()
 		{
 			return type;

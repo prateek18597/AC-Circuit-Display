@@ -143,6 +143,7 @@ sine1 (SINE)[ ]*(\(){Decimal}{whitespace}*{Decimal}{whitespace}*{Decimal}(Khz){w
 	}
 	else
 	{	s_index++;
+		sour[s_index-1].setId(s_index-1);
 		net[sour[s_index-1].getInitialNet()].addSour(sour[s_index-1]);
 		net[sour[s_index-1].getFinalNet()].addSour(sour[s_index-1]);
 	}								
