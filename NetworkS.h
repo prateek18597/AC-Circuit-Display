@@ -1,7 +1,6 @@
 #ifndef NETWORKS_H
 #define NETWORKS_H
 #include "Start.h"
-// #include "Component.h"
 class NetworkS
 {
 	private:

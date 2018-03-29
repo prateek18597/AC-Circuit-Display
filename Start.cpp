@@ -144,6 +144,7 @@ sine1 (SINE)[ ]*(\(){Decimal}{whitespace}*{Decimal}{whitespace}*{Decimal}(Khz){w
 	else
 	{	s_index++;
 		net[sour[s_index-1].getInitialNet()].addSour(sour[s_index-1]);
+		net[sour[s_index-1].getFinalNet()].addSour(sour[s_index-1]);
 	}								
 }
 
@@ -250,6 +251,7 @@ sine1 (SINE)[ ]*(\(){Decimal}{whitespace}*{Decimal}{whitespace}*{Decimal}(Khz){w
 									{
 										c_index++;
 										net[comp[c_index-1].getInitialNet()].addComp(comp[c_index-1]);
+										net[comp[c_index-1].getFinalNet()].addComp(comp[c_index-1]);
 									}	
 
 									
