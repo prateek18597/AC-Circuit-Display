@@ -149,7 +149,7 @@ sine1 (SINE)[ ]*(\(){Decimal}{whitespace}*{Decimal}{whitespace}*{Decimal}(Khz){w
 	}								
 }
 
-{whitespace}*{Component}{whitespace}*{Position}{whitespace}*{Position}{whitespace}*[1-9][0-9]*{factor}{unit}{whitespace}*    {
+{whitespace}*{Component}{whitespace}*{Position}{whitespace}*{Position}{whitespace}*{Decimal}{factor}{unit}{whitespace}*    {
 
 									string temp=yytext;
 									istringstream ss(temp);
