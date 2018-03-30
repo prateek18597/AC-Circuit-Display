@@ -6,18 +6,198 @@
 #include <iostream>
 #include <fstream>
 #include<string>
+#include <iomanip>
+#include <complex>
+#include <cmath>
 using namespace std;
 #include <vector>
 
-extern Net net[100];
+
+
+
+std::complex<double> x[100];
+ 
+   // Number of unknowns
+ 
+// function to reduce matrix to r.e.f.  Returns a value to 
+// indicate whether matrix is singular or not
+int forwardElim(std::complex<double>  mat[][5],int N);
+ 
+// function to calculate the values of the unknowns
+void backSub(std::complex<double>  mat[][5],int N);
+
+// function to get matrix content
+
+void gaussianElimination(std::complex<double> mat[][5],int N)
+{
+    /* reduction into r.e.f. */
+    int singular_flag = forwardElim(mat,N);
+ 
+    /* if matrix is singular */
+    if (singular_flag != -1)
+    {
+        printf("Singular Matrix.\n");
+ 
+        /* if the RHS of equation corresponding to
+           zero row  is 0, * system has infinitely
+           many solutions, else inconsistent*/
+        if (abs(mat[singular_flag][N]))
+            printf("Inconsistent System.");
+        else
+            printf("May have infinitely many "
+                   "solutions.");
+ 
+        
+    }
+ 
+    /* get solution to system and print it using
+       backward substitution */
+    backSub(mat,N);
+}
+ 
+// function for elemntary operation of swapping two rows
+void swap_row(std::complex<double> mat[][5], int i, int j,int N)
+{
+    //printf("Swapped rows %d and %d\n", i, j);
+  cout<<"swap";
+    for (int k=0; k<=N; k++)
+    {
+        std::complex<double> temp = mat[i][k];
+        mat[i][k] = mat[j][k];
+        mat[j][k] = temp;
+    }
+}
+ 
+// function to print matrix content at any stage
+void print(double mat[][5],int N)
+{
+    for (int i=0; i<N; i++, printf("\n"))
+        for (int j=0; j<=N; j++)
+            printf("%lf ", mat[i][j]);
+ 
+    printf("\n");
+}
+ 
+// function to reduce matrix to r.e.f.
+int forwardElim(std::complex<double> mat[][5],int N)
+{
+    for (int k=0; k<N; k++)
+    {
+        // Initialize maximum value and index for pivot
+        int i_max = k;
+        int v_max = abs(mat[i_max][k]);
+ 
+        /* find greater amplitude for pivot if any */
+        for (int i = k+1; i < N; i++)
+            if (abs(mat[i][k]) > v_max)
+                v_max = abs(mat[i][k]), i_max = i;
+ 
+        /* if a prinicipal diagonal element  is zero,
+         * it denotes that matrix is singular, and
+         * will lead to a division-by-zero later. */
+        if (! abs(mat[k][i_max]) )
+            return k; // Matrix is singular
+ 
+        /* Swap the greatest value row with current row */
+        if (i_max != k)
+            swap_row(mat, k, i_max,N);
+ 
+ 
+        for (int i=k+1; i<N; i++)
+        {
+            /* factor f to set current row kth elemnt to 0,
+             * and subsequently remaining kth column to 0 */
+            std::complex<double>  f = mat[i][k]/mat[k][k];
+ 
+            /* subtract fth multiple of corresponding kth
+               row element*/
+            for (int j=k+1; j<=N; j++)
+                mat[i][j] -= mat[k][j]*f;
+ 
+            /* filling lower triangular matrix with zeros*/
+            mat[i][k] = 0;
+        }
+ 
+        //print(mat);        //for matrix state
+    }
+    //print(mat);            //for matrix state
+    return -1;
+}
+ 
+int nothing()
+{
+    return 27;
+} 
+// function to calculate the values of the unknowns
+void backSub(std::complex<double> mat[][5],int N)
+{
+       // An array to store solution
+ 
+    /* Start calculating from last equation up to the
+       first */
+    for (int i = N-1; i >= 0; i--)
+    {
+        /* start with the RHS of the equation */
+        x[i] = mat[i][N];
+ 
+        /* Initialize j to i+1 since matrix is upper
+           triangular*/
+        for (int j=i+1; j<N; j++)
+        {
+            /* subtract all the lhs values
+             * except the coefficient of the variable
+             * whose value is being calculated */
+            x[i] -= mat[i][j]*x[j];
+        }
+ 
+        /* divide the RHS by the coefficient of the
+           unknown being calculated */
+        x[i] = x[i]/mat[i][i];
+    }
+    
+    
+     printf("\nSolution for the system:\n");
+    for (int i=0; i<N; i++)
+         cout<<x[i]<<endl;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 extern Source sour[10];
 extern int s_index;
 extern Component comp[100];
 extern int c_index;
+extern Net net[100];
 ofstream ofile;
 
+
 void html()
-{
+{   
     ofile<<"<html>\n";
     ofile<<"<head><title>AC Circuit Solver</title>\n";
     ofile<<"<script type=\"text/javascript\" src=\"svg-pan-zoom.js\">\n";
@@ -190,7 +370,8 @@ void DrawCurr(int net1,int net2,int offset)
 
 
 void DrawVolt(int net1,int net2,int offset)
-{
+{ 
+  
   int diff=abs(net2-net1);
 
   float l1=(diff-40)/2 ;
@@ -198,7 +379,7 @@ void DrawVolt(int net1,int net2,int offset)
   int x=min(net1,net2);
 
   bool side;
-
+  
   if(x==net1)
   side=true;  
   else
@@ -289,9 +470,15 @@ void genmaim() {
   
   
   int netval[100];
+  int netvarnum[100];
+  int xo=0;
+
+  std::vector<int> enunet;
 
   for(int i=0;i<100;i++)
-  netval[i]=-1; 
+  { netval[i]=-1; 
+    netvarnum[i]=0;
+  }
 
   
 
@@ -337,26 +524,15 @@ void genmaim() {
   for(int i=0;i<100;i++)
   {
     if(N[i]==true)
-    numnets++;  
-
+    {  numnets++;  
+        
+    }  
   }
   
 
   header(numnets);
 
-  for(int i=0;i<100;i++)
-  {
-    if(N[i]==true)
-    {
-      if(i!=0)
-      ofile<<"<text x=\""<<netval[i]<<"\" y=\"248\" "<<" fill=\"black\">net"<<i-1<<"</text>"<<endl; 
-      else
-      ofile<<"<text x=\""<<netval[i]<<"\" y=\"248\" "<<" fill=\"black\">0"<<"</text>"<<endl;  
-
-      ofile<<"<text x=\""<<netval[i]-10<<"\" y=\"250\" "<<" font-size=\"60\" fill=\"blue\">."<<"</text>"<<endl;
-    }  
-
-  }
+  
   
 
   
@@ -400,13 +576,60 @@ void genmaim() {
 
   }
 
+
+  for(int i=0;i<scount;i++)
+  {
+        int a = sour[i].getInitialNet();
+        int b = sour[i].getFinalNet();
+
+        
+        if(N[a]==false)
+        { 
+          netval[a]=s-200;
+          N[a]=true;
+          s+=100;
+        } 
+
+        if(N[b]==false)
+        {
+          netval[b]=s-100;
+          N[b]=true;
+          s+=100;
+        } 
+  }
+
+
+       for(int i=0;i<100;i++){
+       
+       if(N[i]==true){ 
+       netvarnum[i]=xo;
+       enunet.push_back(i);
+       xo++;
+       }
+     }
+  for(int i=0;i<100;i++)
+  {
+    if(N[i]==true)
+    {
+      if(i!=0)
+      ofile<<"<text x=\""<<netval[i]<<"\" y=\"248\" "<<" fill=\"black\">net"<<i-1<<"</text>"<<endl; 
+      else
+      ofile<<"<text x=\""<<netval[i]<<"\" y=\"248\" "<<" fill=\"black\">0"<<"</text>"<<endl;  
+
+      ofile<<"<text x=\""<<netval[i]-10<<"\" y=\"250\" "<<" font-size=\"60\" fill=\"blue\">."<<"</text>"<<endl;
+    }  
+
+  }
+
+  int sourcevarnum[scount];
+
   int viset=-80;
   for(int i=0;i<scount;i++)
   {
       int a = sour[i].getInitialNet();
       int b = sour[i].getFinalNet();
 
-     
+     sourcevarnum[i]=0;
       
      float dco=sour[i].getDCO();
      float amp=sour[i].getAmpli();
@@ -418,7 +641,10 @@ void genmaim() {
 
 
       if( sour[i].getType() == 'V' )
-      DrawVolt(netval[a],netval[b],viset);  
+      { DrawVolt(netval[a],netval[b],viset);  
+        sourcevarnum[i]=xo;
+        xo++;
+      }  
       else if(sour[i].getType() == 'I')
       DrawCurr(netval[a],netval[b],viset);
       
@@ -436,9 +662,228 @@ void genmaim() {
 
   }	
 
+   
+
+  int totalvar = xo ;
+
+
+   
+  
+
+  // for voltage sources convention is that current will flow from initial net to final net
+  
+  
+  std::complex<double> iota(0,1);
+  
+  
+  for(int i=0;i<scount;i++)
+  {   
+      std::complex<double> matrix[4][5] ;
+  
+      for(int p=0;p<totalvar;p++)
+       {
+          for(int q=0;q<100;q++)
+            matrix[p][q]=0;
+
+       } 
+
+      std::complex<double> ans[totalvar][5] ;
+
+   
+      
+      int siz = enunet.size() ;
+    
+      //cout<<siz;
+      float freq = sour[i].getFreq() ; 
+
+      //cout<<freq;
+      double omega = 2 * 3.14 * freq ;
+
+     for(int j=0;j< siz ;j++)
+     {
+        int node = enunet[j]  ;
+        
+        
+        int sn = net[node].getSourceCount();
+        int cn = net[node].getComponentCount();  
+
+        //cout<<node<<" "<<cn<<" "<<sn<<endl; 
+        for(int k=0;k<cn;k++)
+        {   
+
+            Component c = net[node].getComponent(k) ;
+            
+            int a = c.getInitialNet();
+            
+            int b = c.getFinalNet();
+
+            //cout<<a<<" "<<b<<endl;
+           
+            char ch = c.getType();
+            
+            double fl = c.getVal(); 
+
+            if(node == a)
+            {
+                int pos = netvarnum[a];
+                int neg = netvarnum[b];
+
+               if(ch == 'R')
+               {  
+                  matrix[j][pos] += 1/fl ;
+                  matrix[j][neg] -= 1/(fl)  ;
+                  
+               }
+               else if(ch == 'C')
+               {
+                  matrix[j][pos] += iota*omega*fl ;
+                  matrix[j][neg] -= iota*omega*fl ;
+               } 
+               else
+               {  
+                  matrix[j][pos] -= iota/(omega*fl)  ;
+                  matrix[j][neg] += iota/(omega*fl) ;
+
+               } 
+ 
+
+            }
+            else
+            {
+
+                int pos = netvarnum[b];
+                int neg = netvarnum[a];
+                //cout<<pos<<" a"<<neg<<endl;
+               if(ch == 'R')
+               {  
+                  matrix[j][pos] += 1/fl ;
+                  matrix[j][neg] -= 1/(fl)  ;
+                  
+               }
+               else if(ch == 'C')
+               {
+                  matrix[j][pos] += iota*omega*fl ;
+                  matrix[j][neg] -= iota*omega*fl ;
+               } 
+               else
+               {  
+                  matrix[j][pos] -= iota/(omega*fl)  ;
+                  matrix[j][neg] += iota/(omega*fl) ;
+
+               } 
 
 
 
+            }  
+
+
+
+        } 
+
+
+        int activid = sour[i].getId();
+        //cout<<activid<<endl;
+        for(int k=0;k<sn;k++)
+        {
+          Source s=net[node].getSource(k);
+
+          char ch =  s.getType();
+
+          int rnid = s.getId();
+
+          //cout<<rnid<<endl;
+          double fl = s.getAmpli();
+
+          int matvar = sourcevarnum[rnid];
+
+          int a = s.getInitialNet();
+
+          int b = s.getFinalNet();
+
+          int fnlnet = netvarnum[b];
+
+          if(activid == rnid)
+          {   
+              if(ch == 'I')
+              {   
+                  if( node = a)  
+                  {  ans[j][0] += -1 * fl;
+                     ans[fnlnet][0]+=fl;  
+                  }
+
+              }  
+              else
+              {   
+                  if(node == a)
+                  { 
+                    matrix[j][matvar] += 1 ;
+                    matrix[fnlnet][matvar] += -1 ;
+
+                    matrix[matvar][j] += 1;
+                    matrix[matvar][fnlnet] += -1;
+
+                    ans[matvar][0] += fl;
+                  }  
+
+
+              }  
+
+
+          }  
+          else
+          {
+
+            if(ch = 'V')
+            {     
+                  if(a = node)
+                  {   
+                        matrix[j][matvar] += 1 ;
+                        matrix[fnlnet][matvar] += -1 ;
+
+                        matrix[matvar][j] += 1;
+                        matrix[matvar][fnlnet] += -1;
+                  }      
+
+
+            }              
+
+            // for ch='I' do nothing here  
+
+          }  
+
+        
+        } 
+
+     } 
+
+   for(int vx=0;vx<totalvar;vx++)  
+   {
+
+      matrix[vx][totalvar] = ans[vx][0];
+
+   }
+
+   //cout<<totalvar;
+   matrix[3][0]=0;
+   //gaussianElimination(matrix,4);
+
+   for(int m=0;m<totalvar;m++)
+   {
+         for(int p=0;p<=totalvar;p++)
+         cout<<matrix[m][p]<<" " ;
+
+        
+         cout<<endl;  
+
+   } 
+
+  cout<<endl;
+
+
+
+  }  
+
+ 
   
   footer();
   close();
