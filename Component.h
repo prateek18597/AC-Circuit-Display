@@ -3,6 +3,7 @@ class Component
 {
 	private:
 
+		int position;
 		char type;
 		int cNum;
 		int init_net;
@@ -11,6 +12,16 @@ class Component
 		char* val;
 
 	public:
+
+		int getPosition()
+		{
+			return position;
+		}
+
+		void setPosition(int pos)
+		{
+			position=pos;
+		}
 
 		void input(char t,int c,int i,int f,float v)
 		{

@@ -11,12 +11,12 @@
 #include <cmath>
 using namespace std;
 #include <vector>
-
+#include<algorithm>
 
 
 
 std::complex<double> x[100];
- 
+
    // Number of unknowns
  
 // function to reduce matrix to r.e.f.  Returns a value to 
@@ -214,6 +214,22 @@ void html()
     ofile<<"</style>\n";
 }
 
+//Making a Comparator for Source based on frequency.
+
+bool compareFreq(Source a,Source b)
+{
+    return (a.getFreq()<b.getFreq());
+} 
+
+void printSortedSource()
+{
+  sort(sour,sour+s_index,compareFreq);
+  for(int i=0;i<s_index;i++)
+  {
+    cout<<endl<<sour[i].getId()<<endl;
+  }
+}
+
 void close()
 {
   ofile<<"</body>\n";
@@ -248,23 +264,23 @@ void footer() {
 
 void line(int x,int y,int length,char c,int color)
 { 
-  if(color==1){		
+  if(color==1){        
    
-   if(c=='h')		 
+   if(c=='h')         
    ofile<<"<line x1=\""<<x<<"\" "<<"y1=\""<<y<<"\" "<<"x2=\""<<x+length<<"\" "<<"y2=\""<<y<<"\" "<<"style=\"stroke:rgb(0,0,0);stroke-width:2\" />"<<endl;
    else
-   ofile<<"<line x1=\""<<x<<"\" "<<"y1=\""<<y<<"\" "<<"x2=\""<<x<<"\" "<<"y2=\""<<y+length<<"\" "<<"style=\"stroke:rgb(0,0,0);stroke-width:2\" />"<<endl; 		
+   ofile<<"<line x1=\""<<x<<"\" "<<"y1=\""<<y<<"\" "<<"x2=\""<<x<<"\" "<<"y2=\""<<y+length<<"\" "<<"style=\"stroke:rgb(0,0,0);stroke-width:2\" />"<<endl;         
   
   }
   else
   {
    
-   if(c=='h')		 
+   if(c=='h')         
    ofile<<"<line x1=\""<<x<<"\" "<<"y1=\""<<y<<"\" "<<"x2=\""<<x+length<<"\" "<<"y2=\""<<y<<"\" "<<"style=\"stroke:rgb(0,0,0);stroke-width:2\" />"<<endl;
    else
    ofile<<"<line x1=\""<<x<<"\" "<<"y1=\""<<y<<"\" "<<"x2=\""<<x<<"\" "<<"y2=\""<<y+length<<"\" "<<"style=\"stroke:rgb(0,0,0);stroke-width:2\" />"<<endl;
   
-  }	
+  }    
 
 }
 
@@ -277,20 +293,20 @@ void resistor(int x, int y,float nu,int val) {
 
 void capc(int x,int y){
 
-	ofile<<"<line x1=\""<<x<<"\" "<<"y1=\""<<y<<"\" "<<"x2=\""<<x+7.5<<"\" "<<"y2=\""<<y<<"\" "<<"style=\"stroke:rgb(0,0,0);stroke-width:2\" />"<<endl;
-	ofile<<"<line x1=\""<<x+7.5<<"\" "<<"y1=\""<<y-20<<"\" "<<"x2=\""<<x+7.5<<"\" "<<"y2=\""<<y+20<<"\" "<<"style=\"stroke:rgb(0,0,0);stroke-width:2\" />"<<endl;
-	ofile<<"<line x1=\""<<x+17.5<<"\" "<<"y1=\""<<y-20<<"\" "<<"x2=\""<<x+17.5<<"\" "<<"y2=\""<<y+20<<"\" "<<"style=\"stroke:rgb(0,0,0);stroke-width:2\" />"<<endl;
-	ofile<<"<line x1=\""<<x+17.5<<"\" "<<"y1=\""<<y<<"\" "<<"x2=\""<<x+25<<"\" "<<"y2=\""<<y<<"\" "<<"style=\"stroke:rgb(0,0,0);stroke-width:2\" />"<<endl;
+    ofile<<"<line x1=\""<<x<<"\" "<<"y1=\""<<y<<"\" "<<"x2=\""<<x+7.5<<"\" "<<"y2=\""<<y<<"\" "<<"style=\"stroke:rgb(0,0,0);stroke-width:2\" />"<<endl;
+    ofile<<"<line x1=\""<<x+7.5<<"\" "<<"y1=\""<<y-20<<"\" "<<"x2=\""<<x+7.5<<"\" "<<"y2=\""<<y+20<<"\" "<<"style=\"stroke:rgb(0,0,0);stroke-width:2\" />"<<endl;
+    ofile<<"<line x1=\""<<x+17.5<<"\" "<<"y1=\""<<y-20<<"\" "<<"x2=\""<<x+17.5<<"\" "<<"y2=\""<<y+20<<"\" "<<"style=\"stroke:rgb(0,0,0);stroke-width:2\" />"<<endl;
+    ofile<<"<line x1=\""<<x+17.5<<"\" "<<"y1=\""<<y<<"\" "<<"x2=\""<<x+25<<"\" "<<"y2=\""<<y<<"\" "<<"style=\"stroke:rgb(0,0,0);stroke-width:2\" />"<<endl;
 }
 
 
 void Indc(int x,int y){
 
 
-	ofile<<"<path d=\"M"<<x<<","<<y<<" a0.5,1 0 0,0 10,0\" fill=\"none\" stroke=\"black\" stroke-width=\"3\" />" ;
-	ofile<<"<path d=\"M"<<x+10<<","<<y<<" a0.5,1 0 0,0 10,0\" fill=\"none\" stroke=\"black\" stroke-width=\"3\" />" ;
-	ofile<<"<path d=\"M"<<x+20<<","<<y<<" a0.5,1 0 0,0 10,0\" fill=\"none\" stroke=\"black\" stroke-width=\"3\" />" ;
-	ofile<<"<path d=\"M"<<x+30<<","<<y<<" a0.5,1 0 0,0 10,0\" fill=\"none\" stroke=\"black\" stroke-width=\"3\" />" ;
+    ofile<<"<path d=\"M"<<x<<","<<y<<" a0.5,1 0 0,0 10,0\" fill=\"none\" stroke=\"black\" stroke-width=\"3\" />" ;
+    ofile<<"<path d=\"M"<<x+10<<","<<y<<" a0.5,1 0 0,0 10,0\" fill=\"none\" stroke=\"black\" stroke-width=\"3\" />" ;
+    ofile<<"<path d=\"M"<<x+20<<","<<y<<" a0.5,1 0 0,0 10,0\" fill=\"none\" stroke=\"black\" stroke-width=\"3\" />" ;
+    ofile<<"<path d=\"M"<<x+30<<","<<y<<" a0.5,1 0 0,0 10,0\" fill=\"none\" stroke=\"black\" stroke-width=\"3\" />" ;
 
 }
 
@@ -404,7 +420,7 @@ void drawRes(int net1,int net2,int offset,int n,float val,char* c)
     float l1=(diff-30)/2 ;
 
     int x=min(net1,net2);
-    	
+        
     line(x,250+offset,l1,'h',1);
     resistor(x+l1,250+offset,n,val);
     line(x+l1+30,250+offset,l1,'h',1);
@@ -418,16 +434,16 @@ void drawRes(int net1,int net2,int offset,int n,float val,char* c)
 
 void drawCap(int net1,int net2,int offset,int n,float val)
 {
-	int diff=abs(net2-net1);
+    int diff=abs(net2-net1);
 
-	float l1=(diff-22)/2 ;
+    float l1=(diff-22)/2 ;
 
-	int x=min(net1,net2);
+    int x=min(net1,net2);
 
- 	  line(x,250+offset,l1,'h',1);
+       line(x,250+offset,l1,'h',1);
     capc(x+l1,250+offset);
     line(x+l1+22,250+offset,l1,'h',1);
-	
+    
     ofile<<"<text x=\""<<x+l1+20<<"\" y=\""<<246+offset<<"\" fill=\"black\">C"<<n<<"="<<val<<"F</text>";
 
     line(net1,250,offset,'v',0);
@@ -438,12 +454,12 @@ void drawCap(int net1,int net2,int offset,int n,float val)
 void drawInd(int net1,int net2,int offset,int n,float val)
 {
 
-	int diff=abs(net2-net1);
+    int diff=abs(net2-net1);
 
-	float l1=(diff-40)/2 ;
+    float l1=(diff-40)/2 ;
 
-	int x=min(net1,net2);
-	line(x,250+offset,l1,'h',1);
+    int x=min(net1,net2);
+    line(x,250+offset,l1,'h',1);
     Indc(x+l1,250+offset);
     line(x+l1+40,250+offset,l1,'h',1);
 
@@ -489,8 +505,8 @@ void genmaim() {
   
   for(int i=0;i<100;i++)
   {
-  	for(int j=0;j<100;j++)
-  	   number[i][j]=0;	
+      for(int j=0;j<100;j++)
+         number[i][j]=0;    
 
   }
 
@@ -500,25 +516,25 @@ void genmaim() {
 
   for(int i=0;i<num;i++)
   {
-      	int a = comp[i].getInitialNet();
-      	int b = comp[i].getFinalNet();
+          int a = comp[i].getInitialNet();
+          int b = comp[i].getFinalNet();
 
-      	
-      	if(N[a]==false)
-      	{	
-      		netval[a]=s;
-      		N[a]=true;
-      		s+=300;
-      	}	
+          
+          if(N[a]==false)
+          {    
+              netval[a]=s;
+              N[a]=true;
+              s+=300;
+          }    
 
-      	if(N[b]==false)
-      	{
-      		netval[b]=s;
-      		N[b]=true;
-      		s+=300;
-      	}	
+          if(N[b]==false)
+          {
+              netval[b]=s;
+              N[b]=true;
+              s+=300;
+          }    
   }
-	
+    
   int numnets=0;
 
   for(int i=0;i<100;i++)
@@ -539,38 +555,38 @@ void genmaim() {
   
   int offset=80;
   for(int i=0;i<num;i++)
-  {	
-  	int a = comp[i].getInitialNet();
-  	int b = comp[i].getFinalNet();
+  {    
+      int a = comp[i].getInitialNet();
+      int b = comp[i].getFinalNet();
 
     char* c=comp[i].getStrValue();
     cout<<comp[i].getStrValue();
-  	
+      
     int in=comp[i].getNum();
-  	float val =comp[i].getVal();	
-  	if( abs(netval[a] - netval[b]) == 300  &&  number[a][b]==0 ){
+      float val =comp[i].getVal();    
+      if( abs(netval[a] - netval[b]) == 300  &&  number[a][b]==0 ){
 
-  	if(comp[i].getType() == 'R')
-	  drawRes(netval[a],netval[b],0,in,val,c);
-	  else if(comp[i].getType() == 'C')
-	  drawCap(netval[a],netval[b],0,in,val);	
-	  else if(comp[i].getType() == 'L')
+      if(comp[i].getType() == 'R')
+      drawRes(netval[a],netval[b],0,in,val,c);
+      else if(comp[i].getType() == 'C')
+      drawCap(netval[a],netval[b],0,in,val);    
+      else if(comp[i].getType() == 'L')
     drawInd(netval[a],netval[b],0,in,val);
 
-	}
-	else{
+    }
+    else{
 
-	if(comp[i].getType() == 'R')
-	drawRes(netval[a],netval[b],offset,in,val,c);
-	else if(comp[i].getType() == 'C')
-	drawCap(netval[a],netval[b],offset,in,val);	
-	else if(comp[i].getType() == 'L')
+    if(comp[i].getType() == 'R')
+    drawRes(netval[a],netval[b],offset,in,val,c);
+    else if(comp[i].getType() == 'C')
+    drawCap(netval[a],netval[b],offset,in,val);    
+    else if(comp[i].getType() == 'L')
   drawInd(netval[a],netval[b],offset,in,val);
-	offset+= 80;
-	
-	}
+    offset+= 80;
+    
+    }
 
-	number[a][b]++;
+    number[a][b]++;
   number[b][a]++;
 
 
@@ -660,7 +676,7 @@ void genmaim() {
       number[a][b]++;
       number[b][a]++;
 
-  }	
+  }    
 
    
 
@@ -672,7 +688,7 @@ void genmaim() {
 
   // for voltage sources convention is that current will flow from initial net to final net
   
-  
+  //cout<<totalvar;
   std::complex<double> iota(0,1);
   
   
@@ -680,12 +696,12 @@ void genmaim() {
   {   
       std::complex<double> matrix[4][5] ;
   
-      for(int p=0;p<totalvar;p++)
-       {
-          for(int q=0;q<100;q++)
-            matrix[p][q]=0;
+      // for(int p=0;p<totalvar;p++)
+      //  {
+      //     for(int q=0;q<100;q++)
+      //       matrix[p][q]=0;
 
-       } 
+      //  } 
 
       std::complex<double> ans[totalvar][5] ;
 
@@ -884,7 +900,7 @@ void genmaim() {
   }  
 
  
-  
+  printSortedSource();
   footer();
   close();
   ofile.close();

@@ -13,6 +13,7 @@ using namespace std;
 
 %{
 
+	int posi=0;
 	Net net[100];
 	Component comp[100];
 	Source sour[10];
@@ -95,26 +96,31 @@ sine (SINE)[ ]*(\(){whitespace}+{Decimal}{whitespace}+{Decimal}{whitespace}+{Dec
 	magnitude=stof(t);
 	sour[s_index].setAmpli(magnitude);
 	ss>>t;
+	// cout<<t<<endl;
 	// cout<<t.substr(0,t.length()-3)<<endl;
-	magnitude=stof(t.substr(0,t.length()-3));
-	sour[s_index].setStrFreq((char*)t.c_str());
+	// magnitude=stof(t.substr(0,t.length()-3));
+	// sour[s_index].setStrFreq((char*)t.c_str());
 
 	switch(t[t.length()-3])
 	{
 		case 'K':
+		magnitude=stof(t.substr(0,t.length()-3));
 		magnitude*=1000.0;//stof(t.substr(0,t.length()-2))*1000;
 		// comp[c_index].setVal(magnitude);
 		break;
 		case 'N':
+		magnitude=stof(t.substr(0,t.length()-3));
 		magnitude/=1000000000.0;
 		// comp[c_index].setVal(magnitude);
 		break;
 
 		case 'U':
+		magnitude=stof(t.substr(0,t.length()-3));
 		magnitude/=1000000.0;
 		// comp[c_index].setVal(magnitude);
 		break;
 		case 'M':
+		magnitude=stof(t.substr(0,t.length()-3));
 		magnitude/=1000.0;
 		// comp[c_index].setVal(magnitude);
 		break;
@@ -141,7 +147,8 @@ sine (SINE)[ ]*(\(){whitespace}+{Decimal}{whitespace}+{Decimal}{whitespace}+{Dec
 		sour[s_index].clear();
 	}
 	else
-	{	s_index++;
+	{	sour[s_index].setPosition(posi++);
+		s_index++;
 		sour[s_index-1].setId(s_index-1);
 		net[sour[s_index-1].getInitialNet()].addSour(sour[s_index-1]);
 		net[sour[s_index-1].getFinalNet()].addSour(sour[s_index-1]);
@@ -249,6 +256,7 @@ sine (SINE)[ ]*(\(){whitespace}+{Decimal}{whitespace}+{Decimal}{whitespace}+{Dec
 									}
 									else
 									{
+										comp[c_index].setPosition(posi++);
 										c_index++;
 										net[comp[c_index-1].getInitialNet()].addComp(comp[c_index-1]);
 										net[comp[c_index-1].getFinalNet()].addComp(comp[c_index-1]);
