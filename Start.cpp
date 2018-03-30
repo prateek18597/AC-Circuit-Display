@@ -52,8 +52,8 @@ NotUnit (^[ |F|H])
 Position (({net}([0]|([1-9][0-9]*)))|0)
 net (Net)|(NET)|(net)
 Decimal (([0-9]+(\.)[0-9]+)|([0-9]*))
-sine (SINE)[ ]*(\(){whitespace}+{Decimal}{whitespace}+{Decimal}{whitespace}+{Decimal}(Khz){whitespace}+{Decimal}(S)[ ]+{Decimal}{whitespace}+(\)){whitespace}
-sine1 (SINE)[ ]*(\(){Decimal}{whitespace}*{Decimal}{whitespace}*{Decimal}(Khz){whitespace}*{Decimal}(S)[ ]*{Decimal}{whitespace}*(\)){whitespace}
+sine (SINE)[ ]*(\(){whitespace}+{Decimal}{whitespace}+{Decimal}{whitespace}+{Decimal}{factor}(hz){whitespace}+{Decimal}(S)[ ]+{Decimal}{whitespace}+(\)){whitespace}
+sine1 (SINE)[ ]*(\(){Decimal}{whitespace}*{Decimal}{whitespace}*{Decimal}{factor}(hz){whitespace}*{Decimal}(S)[ ]*{Decimal}{whitespace}*(\)){whitespace}
 
 %%
 
