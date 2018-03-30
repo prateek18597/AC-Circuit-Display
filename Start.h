@@ -10,7 +10,8 @@
 #include <complex>
 #include <cmath>
 using namespace std;
-#include <vector>
+#include <vector
+#include<algorithm>
 
 
 
