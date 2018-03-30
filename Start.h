@@ -12,10 +12,6 @@
 using namespace std;
 #include <vector>
 #include<algorithm>
-
-
-
-
 #include <eigen3/Eigen/Dense>
 
 using namespace Eigen;
