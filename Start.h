@@ -3,7 +3,6 @@
 #include "Component.h"
 #include "Source.h"
 #include "Net.h"
-
 #include <iostream>
 #include <fstream>
 #include<string>
@@ -12,6 +11,7 @@
 #include <cmath>
 using namespace std;
 #include <vector>
+
 
 
 
@@ -160,6 +160,9 @@ void backSub(std::complex<double> mat[][5],int N)
     for (int i=0; i<N; i++)
          cout<<x[i]<<endl;
 }
+
+
+
 
 
 
