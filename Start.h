@@ -15,7 +15,7 @@ using namespace std;
 
 
 
-#include <Eigen>
+#include <eigen3/Eigen/Dense>
 
 using namespace Eigen;
 
