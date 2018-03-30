@@ -12,6 +12,10 @@
 using namespace std;
 #include <vector>
 #include<algorithm>
+
+
+
+
 #include <eigen3/Eigen/Dense>
 
 using namespace Eigen;
@@ -50,12 +54,6 @@ void close()
   ofile<<"</html>\n";
 
 }
-
-bool compareFreq(Source a,Source b)
-{
-    return (a.getFreq()<b.getFreq());
-} 
-
 
 void header(int numnets) {
  
@@ -203,6 +201,12 @@ void DrawCurr(int net1,int net2,int offset)
   line(net2,250,offset,'v',0); 
 
 }
+
+
+bool compareFreq(Source a,Source b)
+{
+    return (a.getFreq()<b.getFreq());
+} 
 
 
 void DrawVolt(int net1,int net2,int offset)
@@ -765,7 +769,7 @@ void genmaim() {
   soln = (rmat.inverse()*B) ;
   
 
-  for(int cn=1;cn<=numnets;cn++)
+  for(int cn=1;cn<enunet.size();cn++)
   { 
     int var = enunet[cn] ;
     VolComplex[var] = soln(cn-1,0);
@@ -833,6 +837,7 @@ void genmaim() {
       cout<<endl;
   }
 
+
   for(int count=0;count<scount;count++)
   { 
      char c = sour[count].getType();
@@ -865,6 +870,7 @@ void genmaim() {
 
     cout<<endl;
   } 
+   // below is current
 
   for(int count=0;count<scount;count++)
   {
