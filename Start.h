@@ -339,7 +339,7 @@ void genmaim() {
   
   bool N[1000]={false};
 
-  outfile.open("output.txt");  
+  outfile.open("results.txt");  
   ofile.open("top.html");
   script.open("script1.js");
   html();
