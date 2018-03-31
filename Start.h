@@ -15,176 +15,9 @@ using namespace std;
 
 
 
-std::complex<double> x[100];
- 
-   // Number of unknowns
- 
-// function to reduce matrix to r.e.f.  Returns a value to 
-// indicate whether matrix is singular or not
-int forwardElim(std::complex<double>  mat[][5],int N);
- 
-// function to calculate the values of the unknowns
-void backSub(std::complex<double>  mat[][5],int N);
+#include <Eigen>
 
-// function to get matrix content
-
-void gaussianElimination(std::complex<double> mat[][5],int N)
-{
-    /* reduction into r.e.f. */
-    int singular_flag = forwardElim(mat,N);
- 
-    /* if matrix is singular */
-    if (singular_flag != -1)
-    {
-        printf("Singular Matrix.\n");
- 
-        /* if the RHS of equation corresponding to
-           zero row  is 0, * system has infinitely
-           many solutions, else inconsistent*/
-        if (abs(mat[singular_flag][N]))
-            printf("Inconsistent System.");
-        else
-            printf("May have infinitely many "
-                   "solutions.");
- 
-        
-    }
- 
-    /* get solution to system and print it using
-       backward substitution */
-    backSub(mat,N);
-}
- 
-// function for elemntary operation of swapping two rows
-void swap_row(std::complex<double> mat[][5], int i, int j,int N)
-{
-    //printf("Swapped rows %d and %d\n", i, j);
-  cout<<"swap";
-    for (int k=0; k<=N; k++)
-    {
-        std::complex<double> temp = mat[i][k];
-        mat[i][k] = mat[j][k];
-        mat[j][k] = temp;
-    }
-}
- 
-// function to print matrix content at any stage
-void print(double mat[][5],int N)
-{
-    for (int i=0; i<N; i++, printf("\n"))
-        for (int j=0; j<=N; j++)
-            printf("%lf ", mat[i][j]);
- 
-    printf("\n");
-}
- 
-// function to reduce matrix to r.e.f.
-int forwardElim(std::complex<double> mat[][5],int N)
-{
-    for (int k=0; k<N; k++)
-    {
-        // Initialize maximum value and index for pivot
-        int i_max = k;
-        int v_max = abs(mat[i_max][k]);
- 
-        /* find greater amplitude for pivot if any */
-        for (int i = k+1; i < N; i++)
-            if (abs(mat[i][k]) > v_max)
-                v_max = abs(mat[i][k]), i_max = i;
- 
-        /* if a prinicipal diagonal element  is zero,
-         * it denotes that matrix is singular, and
-         * will lead to a division-by-zero later. */
-        if (! abs(mat[k][i_max]) )
-            return k; // Matrix is singular
- 
-        /* Swap the greatest value row with current row */
-        if (i_max != k)
-            swap_row(mat, k, i_max,N);
- 
- 
-        for (int i=k+1; i<N; i++)
-        {
-            /* factor f to set current row kth elemnt to 0,
-             * and subsequently remaining kth column to 0 */
-            std::complex<double>  f = mat[i][k]/mat[k][k];
- 
-            /* subtract fth multiple of corresponding kth
-               row element*/
-            for (int j=k+1; j<=N; j++)
-                mat[i][j] -= mat[k][j]*f;
- 
-            /* filling lower triangular matrix with zeros*/
-            mat[i][k] = 0;
-        }
- 
-        //print(mat);        //for matrix state
-    }
-    //print(mat);            //for matrix state
-    return -1;
-}
- 
-int nothing()
-{
-    return 27;
-} 
-// function to calculate the values of the unknowns
-void backSub(std::complex<double> mat[][5],int N)
-{
-       // An array to store solution
- 
-    /* Start calculating from last equation up to the
-       first */
-    for (int i = N-1; i >= 0; i--)
-    {
-        /* start with the RHS of the equation */
-        x[i] = mat[i][N];
- 
-        /* Initialize j to i+1 since matrix is upper
-           triangular*/
-        for (int j=i+1; j<N; j++)
-        {
-            /* subtract all the lhs values
-             * except the coefficient of the variable
-             * whose value is being calculated */
-            x[i] -= mat[i][j]*x[j];
-        }
- 
-        /* divide the RHS by the coefficient of the
-           unknown being calculated */
-        x[i] = x[i]/mat[i][i];
-    }
-    
-    
-     printf("\nSolution for the system:\n");
-    for (int i=0; i<N; i++)
-         cout<<x[i]<<endl;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+using namespace Eigen;
 
 
 
@@ -664,33 +497,63 @@ void genmaim() {
 
    
 
-  int totalvar = xo ;
+  const int totalvar = xo ;
 
-
+  int voltnum = totalvar - numnets - 1 ;
    
   
-
   // for voltage sources convention is that current will flow from initial net to final net
   
-  
+  //cout<<totalvar;
+
   std::complex<double> iota(0,1);
   
-  
+  std::complex<double> zero(0,0);
+
+  std::complex<double> VolComplex[100];
+
+  std::complex<double> CurrComplex[100];
+
+  for(int inn=0;inn<100;inn++)
+  VolComplex[inn]=zero;
+
+  for(int inn=0;inn<100;inn++)
+  CurrComplex[inn]=zero;	
+
+ // for(int inn=0;inn<enunet.size();inn++)
+ // cout<<enunet[inn]<<" ";
+
+  // for(int i=0;i<scount;i++)
+  // cout<<sourcevarnum[i]<<endl;	  // use krna hune yaad rakhen
+ 		
+ 
+  cout<<endl;	
+
+  Matrix<std::complex<double>,Dynamic,Dynamic> matrix(totalvar,totalvar+1) ;
+  std::complex<double> ans[totalvar][1] ;
+
+
+
+
   for(int i=0;i<scount;i++)
   {   
-      std::complex<double> matrix[4][5] ;
-  
+      
+  	  
+	
       for(int p=0;p<totalvar;p++)
        {
-          for(int q=0;q<100;q++)
-            matrix[p][q]=0;
+          for(int q=0;q<=totalvar;q++)
+            matrix(p,q)=zero;
 
        } 
 
-      std::complex<double> ans[totalvar][5] ;
 
-   
+
       
+
+   	  for(int p=0;p<totalvar;p++)		
+  	   ans[p][0]=zero;	
+
       int siz = enunet.size() ;
     
       //cout<<siz;
@@ -730,19 +593,19 @@ void genmaim() {
 
                if(ch == 'R')
                {  
-                  matrix[j][pos] += 1/fl ;
-                  matrix[j][neg] -= 1/(fl)  ;
+                  matrix(j,pos) += 1/fl ;
+                  matrix(j,neg) -= 1/(fl)  ;
                   
                }
                else if(ch == 'C')
                {
-                  matrix[j][pos] += iota*omega*fl ;
-                  matrix[j][neg] -= iota*omega*fl ;
+                  matrix(j,pos) += iota*omega*fl ;
+                  matrix(j,neg) -= iota*omega*fl ;
                } 
                else
                {  
-                  matrix[j][pos] -= iota/(omega*fl)  ;
-                  matrix[j][neg] += iota/(omega*fl) ;
+                  matrix(j,pos) -= iota/(omega*fl)  ;
+                  matrix(j,neg) += iota/(omega*fl) ;
 
                } 
  
@@ -756,19 +619,19 @@ void genmaim() {
                 //cout<<pos<<" a"<<neg<<endl;
                if(ch == 'R')
                {  
-                  matrix[j][pos] += 1/fl ;
-                  matrix[j][neg] -= 1/(fl)  ;
+                  matrix(j,pos) += 1/fl ;
+                  matrix(j,neg) -= 1/(fl)  ;
                   
                }
                else if(ch == 'C')
                {
-                  matrix[j][pos] += iota*omega*fl ;
-                  matrix[j][neg] -= iota*omega*fl ;
+                  matrix(j,pos) += iota*omega*fl ;
+                  matrix(j,neg) -= iota*omega*fl ;
                } 
                else
                {  
-                  matrix[j][pos] -= iota/(omega*fl)  ;
-                  matrix[j][neg] += iota/(omega*fl) ;
+                  matrix(j,pos) -= iota/(omega*fl)  ;
+                  matrix(j,neg) += iota/(omega*fl) ;
 
                } 
 
@@ -816,11 +679,11 @@ void genmaim() {
               {   
                   if(node == a)
                   { 
-                    matrix[j][matvar] += 1 ;
-                    matrix[fnlnet][matvar] += -1 ;
+                    matrix(j,matvar) += 1 ;
+                    matrix(fnlnet,matvar) += -1 ;
 
-                    matrix[matvar][j] += 1;
-                    matrix[matvar][fnlnet] += -1;
+                    matrix(matvar,j) += 1;
+                    matrix(matvar,fnlnet) += -1;
 
                     ans[matvar][0] += fl;
                   }  
@@ -837,11 +700,11 @@ void genmaim() {
             {     
                   if(a = node)
                   {   
-                        matrix[j][matvar] += 1 ;
-                        matrix[fnlnet][matvar] += -1 ;
+                        matrix(j,matvar) += 1 ;
+                        matrix(fnlnet,matvar) += -1 ;
 
-                        matrix[matvar][j] += 1;
-                        matrix[matvar][fnlnet] += -1;
+                        matrix(matvar,j) += 1;
+                        matrix(matvar,fnlnet) += -1;
                   }      
 
 
@@ -859,26 +722,174 @@ void genmaim() {
    for(int vx=0;vx<totalvar;vx++)  
    {
 
-      matrix[vx][totalvar] = ans[vx][0];
+      matrix(vx,totalvar) = ans[vx][0];
 
    }
 
    //cout<<totalvar;
-   matrix[3][0]=0;
+   //matrix[3][0]=0;
    //gaussianElimination(matrix,4);
+   
+   Matrix<std::complex<double>,Dynamic,Dynamic> rmat(totalvar-1,totalvar-1);
 
-   for(int m=0;m<totalvar;m++)
+   for(int m=1;m<totalvar;m++)
    {
-         for(int p=0;p<=totalvar;p++)
-         cout<<matrix[m][p]<<" " ;
+         for(int p=1;p<totalvar;p++)
+         rmat(m-1,p-1)=matrix(m,p);
 
         
-         cout<<endl;  
-
    } 
+   	
+   // for(int m=0;m<totalvar;m++)
+   // {
+   //       for(int p=0;p<=totalvar;p++)
+   //       cout<<matrix(m,p)<<" ";
 
-  cout<<endl;
+   //   	cout<<endl;
+        
+   // }
 
+
+  Matrix<std::complex<double>,Dynamic,1> B(totalvar-1,1);   
+  Matrix<std::complex<double>,Dynamic,1> soln(totalvar-1,1);
+  //B << 0,0,10;
+
+  for(int g=1;g<=totalvar-1;g++)
+  {
+  	B(g-1,0)=ans[g][0];
+  }	
+  
+  soln = (rmat.inverse()*B) ;
+  
+
+  for(int cn=1;cn<numnets;cn++)
+  {	
+  	int var = enunet[cn] ;
+  	VolComplex[var] = soln(cn-1,0);
+  }	
+
+  for(int cn=0;cn<scount;cn++)
+  {	
+  		int var = sourcevarnum[cn] ;
+
+  		if( var!=0 )
+  		{
+  			CurrComplex[cn] = soln(var-1,0);
+
+  		}	
+
+  }	
+  // for(int inn=0;inn<10;inn++)
+  // cout<<VolComplex[inn]<<" ";	
+
+ // cout<<soln<<endl;
+  std::complex<double> Istore[100];
+
+  cout <<"FREQ "<< freq <<"hz" <<endl;
+  
+  cout<<"Voltage\n";
+
+  for(int count=0;count<num;count++)
+  {		
+  		int a = comp[count].getInitialNet();
+  		int b = comp[count].getFinalNet();
+  		int number = comp[count].getNum();
+  		char tp = comp[count].getType() ;
+
+  		float fl = comp[count].getVal();
+
+  		std::complex<double> flc (fl,0) ; 
+
+  		std::complex<double> Vstore = VolComplex[a] - VolComplex[b] ;
+  		
+  		if( tp == 'R')
+  		Istore[count] = (Vstore)/flc  ;
+  		else if(tp == 'C') 
+  		{	
+  			std::complex<double> Z(0,0)  ;
+
+  			Z +=  (iota*omega*flc);
+
+  			//cout<<"\na"<<Z<<" "<<Vstore<<endl;
+  			Istore[count] = (Vstore)*Z ; 
+
+  			//cout<<endl<<abs(Istore[count])<<endl;
+  		}		
+  		else  
+  		{	
+  			std::complex<double> Z  (iota*omega*flc) ;
+  			Istore[count] = (Vstore)/Z ; 
+  		}
+
+  		double mag = abs(Vstore);
+  		double argu = arg(Vstore)*(180)/3.14;
+
+  		cout<<tp<<number<<" "<<mag<<" "<<argu;
+  		
+
+  		cout<<endl;
+  }
+
+
+  for(int count=0;count<scount;count++)
+  {	
+  	 char c = sour[count].getType();
+     int nu = sour[count].getNum();
+
+     int a = sour[count].getInitialNet();
+     int b = sour[count].getFinalNet();	
+
+     std::complex<double> Vstore = VolComplex[a] - VolComplex[b] ;
+
+     double mag=abs(Vstore);
+	 double argu = arg(Vstore)*(180)/3.14;
+
+     cout<<c<<nu<<" "<<mag<<" "<<argu<<endl;
+
+
+  }	
+
+  cout<<"\nCurrent"<<endl;
+
+  for(int count=0;count<num;count++)
+  {
+  	char tp = comp[count].getType() ;
+  	int number = comp[count].getNum();
+
+  	double mag = abs(Istore[count]);
+  	double argu = arg(Istore[count])*(180)/3.14;
+  	
+  	cout<<tp<<number<<" "<<mag<<" "<<argu;
+
+  	cout<<endl;
+  }	
+   // below is current
+
+  for(int count=0;count<scount;count++)
+  {
+  	 char c = sour[count].getType();
+     int nu = sour[count].getNum();
+
+   	if(c == 'I') 
+   	{	
+   		float val = sour[count].getAmpli();
+
+   		cout<<c<<nu<<" "<<val<<" 0.0" ;
+   	}  
+    else
+    {	std::complex<double> neg (-1,0) ;
+
+    	CurrComplex[count] = CurrComplex[count] * neg ; 
+    	double mag= abs(CurrComplex[count]);
+    	double argu = arg(CurrComplex[count])*(180)/3.14;	
+    	cout<<c<<nu<<" "<<mag<<" "<<argu ;
+
+    }	
+
+    cout<<endl;
+  }	
+
+  cout<<endl;	
 
 
   }  
