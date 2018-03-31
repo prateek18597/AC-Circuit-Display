@@ -24,7 +24,7 @@ extern Component comp[100];
 extern int c_index;
 extern Net net[100];
 ofstream ofile;
-
+ofstream outfile;
 
 void html()
 {   
@@ -296,7 +296,7 @@ void genmaim() {
   
   bool N[100];
 
-    
+  outfile.open("output.txt");  
   ofile.open("top.html");
   html();
 
@@ -504,7 +504,6 @@ void genmaim() {
 
   int voltnum = totalvar - numnets - 1 ;
    
-  
   // for voltage sources convention is that current will flow from initial net to final net
   
   //cout<<totalvar;
@@ -788,8 +787,10 @@ void genmaim() {
  // cout<<soln<<endl;
   std::complex<double> Istore[100];
 
+  outfile<<"FREQ "<< freq <<"hz" <<endl;
   cout <<"FREQ "<< freq <<"hz" <<endl;
   
+  outfile<<"Voltage\n";  
   cout<<"Voltage\n";
 
   for(int count=0;count<num;count++)
@@ -827,9 +828,11 @@ void genmaim() {
       double mag = abs(Vstore);
       double argu = arg(Vstore)*(180)/3.14;
 
+      outfile<<tp<<number<<" "<<mag<<" "<<argu;
+      
       cout<<tp<<number<<" "<<mag<<" "<<argu;
       
-
+      outfile<<endl;
       cout<<endl;
   }
 
@@ -848,10 +851,12 @@ void genmaim() {
    double argu = arg(Vstore)*(180)/3.14;
 
      cout<<c<<nu<<" "<<mag<<" "<<argu<<endl;
+     outfile<<c<<nu<<" "<<mag<<" "<<argu<<endl;
 
 
   } 
 
+  outfile<<"\nCurrent"<<endl;
   cout<<"\nCurrent"<<endl;
 
   for(int count=0;count<num;count++)
@@ -862,6 +867,7 @@ void genmaim() {
     double mag = abs(Istore[count]);
     double argu = arg(Istore[count])*(180)/3.14;
     
+    outfile<<tp<<number<<" "<<mag<<" "<<argu<<endl;
     cout<<tp<<number<<" "<<mag<<" "<<argu;
 
     cout<<endl;
@@ -876,7 +882,7 @@ void genmaim() {
     if(c == 'I') 
     { 
       float val = sour[count].getAmpli();
-
+      outfile<<c<<nu<<" "<<val<<" 0.0" ;
       cout<<c<<nu<<" "<<val<<" 0.0" ;
     }  
     else
@@ -885,13 +891,15 @@ void genmaim() {
       CurrComplex[count] = CurrComplex[count] * neg ; 
       double mag= abs(CurrComplex[count]);
       double argu = arg(CurrComplex[count])*(180)/3.14; 
+      outfile<<c<<nu<<" "<<mag<<" "<<argu ;
       cout<<c<<nu<<" "<<mag<<" "<<argu ;
 
     } 
 
+    outfile<<endl;
     cout<<endl;
   } 
-
+  outfile<<endl;
   cout<<endl; 
 
 
@@ -902,6 +910,7 @@ void genmaim() {
   footer();
   close();
   ofile.close();
+  outfile.close();
 
 }
 
