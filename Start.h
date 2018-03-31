@@ -19,11 +19,11 @@ using namespace Eigen;
 
 
 
-extern Source sour[10];
+extern Source sour[1000];
 extern int s_index;
-extern Component comp[100];
+extern Component comp[1000];
 extern int c_index;
-extern Net net[100];
+extern Net net[1000];
 ofstream ofile;
 ofstream outfile;
 ofstream script;
@@ -121,7 +121,7 @@ void capc(int x,int y,string id){
 
 void Indc(int x,int y,string id){
 
-  ofile<<"<g id=\""<<id<<"\" onclick=\""<<id<<"()\" stroke=\"black\">\n";
+  ofile<<"<g id=\""<<id<<"\" openclick=\""<<id<<"()\" stroke=\"black\">\n";
   ofile<<"<path class=\""<<id<<"\" d=\"M"<<x<<","<<y<<" a0.5,1 0 0,0 10,0\" fill=\"none\"  stroke-width=\"3\" onclick=\""<<id<<"()\" />" ;
   ofile<<"<path class=\""<<id<<"\" d=\"M"<<x+10<<","<<y<<" a0.5,1 0 0,0 10,0\" fill=\"none\"  stroke-width=\"3\" onclick=\""<<id<<"()\" />" ;
   ofile<<"<path class=\""<<id<<"\" d=\"M"<<x+20<<","<<y<<" a0.5,1 0 0,0 10,0\" fill=\"none\"  stroke-width=\"3\" onclick=\""<<id<<"()\" />" ;
@@ -337,25 +337,25 @@ void generateFunctions()
 void genmaim() {
   unsigned x, y;
   
-  bool N[100];
+  bool N[1000]={false};
 
   outfile.open("output.txt");  
   ofile.open("top.html");
   script.open("script1.js");
   html();
 
-  for(int i=0;i<100;i++)
+  for(int i=0;i<1000;i++)
   N[i]=false; 
 
   
   
-  int netval[100];
-  int netvarnum[100];
+  int netval[1000];//={-1};
+  int netvarnum[1000];//={0};
   int xo=0;
 
   std::vector<int> enunet;
 
-  for(int i=0;i<100;i++)
+  for(int i=0;i<1000;i++)
   { netval[i]=-1; 
     netvarnum[i]=0;
   }
@@ -365,11 +365,11 @@ void genmaim() {
   int num=c_index;
   int scount=s_index;
 
-  int number[100][100];
+  int number[1000][1000];
   
-  for(int i=0;i<100;i++)
+  for(int i=0;i<1000;i++)
   {
-    for(int j=0;j<100;j++)
+    for(int j=0;j<1000;j++)
        number[i][j]=0;  
 
   }
@@ -401,7 +401,7 @@ void genmaim() {
   
   int numnets=0;
 
-  for(int i=0;i<100;i++)
+  for(int i=0;i<1000;i++)
   {
     if(N[i]==true)
     {  numnets++;  
@@ -479,7 +479,7 @@ void genmaim() {
   }
 
 
-       for(int i=0;i<100;i++){
+       for(int i=0;i<1000;i++){
        
        if(N[i]==true){ 
        netvarnum[i]=xo;
@@ -487,7 +487,7 @@ void genmaim() {
        xo++;
        }
      }
-  for(int i=0;i<100;i++)
+  for(int i=0;i<1000;i++)
   {
     if(N[i]==true)
     {
@@ -556,14 +556,14 @@ void genmaim() {
   
   std::complex<double> zero(0,0);
 
-  std::complex<double> VolComplex[100];
+  std::complex<double> VolComplex[1000];
 
-  std::complex<double> CurrComplex[100];
+  std::complex<double> CurrComplex[1000];
 
-  for(int inn=0;inn<100;inn++)
+  for(int inn=0;inn<1000;inn++)
   VolComplex[inn]=zero;
 
-  for(int inn=0;inn<100;inn++)
+  for(int inn=0;inn<1000;inn++)
   CurrComplex[inn]=zero;  
 
  // for(int inn=0;inn<enunet.size();inn++)
@@ -832,10 +832,11 @@ void genmaim() {
   // cout<<VolComplex[inn]<<" ";  
 
  // cout<<soln<<endl;
-  std::complex<double> Istore[100];
+  std::complex<double> Istore[1000];
 
-  outfile<<"FREQ "<< freq <<"hz" <<endl;
-  cout <<"FREQ "<< freq <<"hz" <<endl;
+  freq=freq/1000.0;
+  outfile<<"FREQ "<< freq <<"Khz" <<endl;
+  cout <<"FREQ "<< freq <<"Khz" <<endl;
   
   outfile<<"\nVoltage\n";  
   cout<<"\nVoltage\n";

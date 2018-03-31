@@ -14,9 +14,9 @@ using namespace std;
 %{
 
 	int posi=0;
-	Net net[100];
-	Component comp[100];
-	Source sour[10];
+	Net net[1000];
+	Component comp[1000];
+	Source sour[1000];
 	int c_index=0;
 	int s_index=0;
 	bool term=false;
@@ -265,9 +265,8 @@ sine (SINE)[ ]*(\(){whitespace}+{Decimal}{whitespace}+{Decimal}{whitespace}+{Dec
 									
 }
 
-x	{
-	if(!term)
-	show();
+[(Netlist:)(NETLIST:)(netlist:)] {
+
 }
 
 .	{
