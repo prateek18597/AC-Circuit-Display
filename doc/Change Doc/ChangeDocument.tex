@@ -1,0 +1,50 @@
+\documentclass[12pt]{extarticle}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepackage{eso-pic}
+\usepackage{datetime}
+\usepackage{lipsum}
+\usepackage{graphicx}
+\graphicspath{ {/home/pratik/Desktop}}
+\AddToShipoutPictureBG{%
+\begin{tikzpicture}[overlay,remember picture]
+\draw[line width=6pt]
+    ($ (current page.north west) + (0.8cm,-0.8cm) $)
+    rectangle
+    ($ (current page.south east) + (-0.8cm,0.8cm) $);
+\draw[line width=1.5pt]
+    ($ (current page.north west) + (1.2cm,-1.2cm) $)
+    rectangle
+    ($ (current page.south east) + (-1.2cm,1.2cm) $);
+\end{tikzpicture}
+}
+\usepackage{color}
+\usepackage{hyperref}
+\date{}
+\author{\textbf{Vaibhav Vashisht} 2016CSJ0002  \\\textbf{Pratik Parmar} 2016CSJ0049}
+\title{\textbf{COP290: Design Practices\\ Changes Document \\ AC Circuit Solver  }}
+\begin{document}
+\maketitle
+\newpage
+
+%\begin{center}
+%\section*{\underline{\textbf{AC Circuit Solver}}}
+%\end{center}
+
+\section{Changes}
+
+
+The purpose of this document is to enumerate deviations that our application has taken from that mentioned in the design document.
+
+\begin{enumerate}
+\item \textbf{Circuit Solving}- We have used nodal analysis for solving the cirucit. Earlier we had planned of finding equivalent impeadance and then finding current in the circuit.But using this  was cumbersome as nodal analysis would still be required for finding volatages and currents for individual components.Instead we have applied nodal analysis at each node and formed equations equal to number of nets(except zero).Then equations are solved using EIGEN library in C++ to solve the linear equations obtained by Nodal Analysis.
+  
+\item \textbf{Parsing}- Bison has not been used for parsing,tokens are generated using flex and their data is stored in classes Components/Source according to type of object(source/resistor etc).
+
+\item \textbf{Detect Circuits}- We have improved circuit error detection mechanisms of the circuit,if any output(voltage/current) of the circuit comes out to be equal to inf/nan then we know that either circuit is incomplete or some components are wrongly connected.For eg two voltage sources in parallel with different amplitudes.
+
+\item \textbf{Zooming}- For the purpose of Zooming, we have used svg-pan-zoom.js a JavaScript Library to facilate Zooming from \href{https://github.com/ariutta/svg-pan-zoom}{SVG-PAN-ZOOM}.  
+  
+\end{enumerate}
+
+\end{document}
