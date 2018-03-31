@@ -4,6 +4,7 @@
 #include "Source.h"
 #include "Net.h"
 #include <iostream>
+#include<math.h>
 #include <fstream>
 #include<string>
 #include <iomanip>
@@ -104,34 +105,36 @@ void line(int x,int y,int length,char c,int color)
 void resistor(int x, int y,float nu,int val,string id) {
   
     // ofile<<"div onclick=\"\""
-    ofile<<"<path d=\"M"<<x<<" "<<y<<" L"<<x+5<<" "<<y+10<<" L"<<x+10<<" "<<y<<" L"<<x+15<<" "<<y+10<<" L"<<x+20<<" "<<y<<" L"<<x+25<<" "<<y+10<<" L"<<x+30<<" "<<y<<"\" stroke=\"black\" fill=\"none\" stroke-width=\"3\" onclick=\""<<id<<"()\" /> "<<endl;
+    ofile<<"<path id=\""<<id<<"\" d=\"M"<<x<<" "<<y<<" L"<<x+5<<" "<<y+10<<" L"<<x+10<<" "<<y<<" L"<<x+15<<" "<<y+10<<" L"<<x+20<<" "<<y<<" L"<<x+25<<" "<<y+10<<" L"<<x+30<<" "<<y<<"\" stroke=\"black\" fill=\"none\" stroke-width=\"3\" onclick=\""<<id<<"()\" /> "<<endl;
    // ofile<<"<text x=\""<<x+10<<"\" y=\""<<y-4<<"\" fill=\"black\">r"<<nu<<"="<<val<<"Ohm </text>";
 }
 
 void capc(int x,int y,string id){
-
-  ofile<<"<line x1=\""<<x<<"\" "<<"y1=\""<<y<<"\" "<<"x2=\""<<x+7.5<<"\" "<<"y2=\""<<y<<"\" "<<"style=\"stroke:rgb(0,0,0);stroke-width:2\" onclick=\""<<id<<"()\" />"<<endl;
-  ofile<<"<line x1=\""<<x+7.5<<"\" "<<"y1=\""<<y-20<<"\" "<<"x2=\""<<x+7.5<<"\" "<<"y2=\""<<y+20<<"\" "<<"style=\"stroke:rgb(0,0,0);stroke-width:2\" onclick=\""<<id<<"()\" />"<<endl;
-  ofile<<"<line x1=\""<<x+17.5<<"\" "<<"y1=\""<<y-20<<"\" "<<"x2=\""<<x+17.5<<"\" "<<"y2=\""<<y+20<<"\" "<<"style=\"stroke:rgb(0,0,0);stroke-width:2\" onclick=\""<<id<<"()\" />"<<endl;
-  ofile<<"<line x1=\""<<x+17.5<<"\" "<<"y1=\""<<y<<"\" "<<"x2=\""<<x+25<<"\" "<<"y2=\""<<y<<"\" "<<"style=\"stroke:rgb(0,0,0);stroke-width:2\" onclick=\""<<id<<"()\" />"<<endl;
+  ofile<<"<g id=\""<<id<<"\" onclick=\""<<id<<"()\" stroke=\"black\">\n";
+  ofile<<"<line  x1=\""<<x<<"\" "<<"y1=\""<<y<<"\" "<<"x2=\""<<x+7.5<<"\" "<<"y2=\""<<y<<"\" "<<"style=\"stroke-width:2\" />"<<endl;
+  ofile<<"<line  x1=\""<<x+7.5<<"\" "<<"y1=\""<<y-20<<"\" "<<"x2=\""<<x+7.5<<"\" "<<"y2=\""<<y+20<<"\" "<<"style=\"stroke-width:2\" />"<<endl;
+  ofile<<"<line  x1=\""<<x+17.5<<"\" "<<"y1=\""<<y-20<<"\" "<<"x2=\""<<x+17.5<<"\" "<<"y2=\""<<y+20<<"\" "<<"style=\"stroke-width:2\" />"<<endl;
+  ofile<<"<line  x1=\""<<x+17.5<<"\" "<<"y1=\""<<y<<"\" "<<"x2=\""<<x+25<<"\" "<<"y2=\""<<y<<"\" "<<"style=\"stroke-width:2\"  />"<<endl;
+  ofile<<"</g>\n";
 }
 
 
 void Indc(int x,int y,string id){
 
-
-  ofile<<"<path d=\"M"<<x<<","<<y<<" a0.5,1 0 0,0 10,0\" fill=\"none\" stroke=\"black\" stroke-width=\"3\" onclick=\""<<id<<"()\" />" ;
-  ofile<<"<path d=\"M"<<x+10<<","<<y<<" a0.5,1 0 0,0 10,0\" fill=\"none\" stroke=\"black\" stroke-width=\"3\" onclick=\""<<id<<"()\" />" ;
-  ofile<<"<path d=\"M"<<x+20<<","<<y<<" a0.5,1 0 0,0 10,0\" fill=\"none\" stroke=\"black\" stroke-width=\"3\" onclick=\""<<id<<"()\" />" ;
-  ofile<<"<path d=\"M"<<x+30<<","<<y<<" a0.5,1 0 0,0 10,0\" fill=\"none\" stroke=\"black\" stroke-width=\"3\" onclick=\""<<id<<"()\" />" ;
-
+  ofile<<"<g id=\""<<id<<"\" onclick=\""<<id<<"()\" stroke=\"black\">\n";
+  ofile<<"<path class=\""<<id<<"\" d=\"M"<<x<<","<<y<<" a0.5,1 0 0,0 10,0\" fill=\"none\"  stroke-width=\"3\" onclick=\""<<id<<"()\" />" ;
+  ofile<<"<path class=\""<<id<<"\" d=\"M"<<x+10<<","<<y<<" a0.5,1 0 0,0 10,0\" fill=\"none\"  stroke-width=\"3\" onclick=\""<<id<<"()\" />" ;
+  ofile<<"<path class=\""<<id<<"\" d=\"M"<<x+20<<","<<y<<" a0.5,1 0 0,0 10,0\" fill=\"none\"  stroke-width=\"3\" onclick=\""<<id<<"()\" />" ;
+  ofile<<"<path class=\""<<id<<"\" d=\"M"<<x+30<<","<<y<<" a0.5,1 0 0,0 10,0\" fill=\"none\"  stroke-width=\"3\" onclick=\""<<id<<"()\" />" ;
+  ofile<<"</g>\n";
 }
 
 
 void Volt(int x,int y,bool side,string id)
 {
   //ofile<<"<text x=\""<<x-1<<"\" y=\""<<y-2<<"\" "<<" fill=\"red\">+"<<"</text>"<<endl;
-  ofile<<"<circle cx=\""<<x<<"\"  cy=\""<<y<<"\" r=\"20\" "<<"stroke=\"black\" stroke-width=\"3\" fill=\"none\" onclick=\""<<id<<"()\"/>";
+  ofile<<"<g id=\""<<id<<"\" onclick=\""<<id<<"()\" stroke=\"black\">\n";
+  ofile<<"<circle cx=\""<<x<<"\"  cy=\""<<y<<"\" r=\"20\" "<<" stroke-width=\"3\" fill=\"none\"/>";
   ofile<<"<text x=\""<<x-8<<"\" y=\""<<y+5<<"\" "<<" font-size=\"20\" fill=\"black\">~"<<"</text>"<<endl;
   if(side==true)
   {
@@ -145,7 +148,7 @@ void Volt(int x,int y,bool side,string id)
     ofile<<"<text x=\""<<x+35<<"\" y=\""<<y-3<<"\" "<<" font-size=\"20\" fill=\"black\">+"<<"</text>"<<endl;
 
   }
-
+  ofile<<"</g>\n";
 }
 
 
@@ -153,7 +156,8 @@ void Volt(int x,int y,bool side,string id)
 
 void Curr(int x,int y,bool side,string id)
 {
-  ofile<<"<rect x=\""<<x<<"\" y=\""<<y-10<<"\" width=\"20\" height=\"20\" style=\"fill:none;stroke:black;stroke-width:2;\" onclick=\""<<id<<"()\"/>";
+  ofile<<"<g id=\""<<id<<"\" onclick=\""<<id<<"()\" stroke=\"black\">\n";
+  ofile<<"<rect x=\""<<x<<"\" y=\""<<y-10<<"\" width=\"20\" height=\"20\" style=\"fill:none;stroke-width:2;\"/>";
 
   if(side==true)
   { 
@@ -165,7 +169,7 @@ void Curr(int x,int y,bool side,string id)
     ofile<<"<text x=\""<<x-15<<"\" y=\""<<y<<"\" "<<" font-size=\"30\" fill=\"black\">-"<<"</text>"<<endl;
     ofile<<"<text x=\""<<x+23<<"\" y=\""<<y<<"\" "<<" font-size=\"20\" fill=\"black\">+"<<"</text>"<<endl;
   }
-
+  ofile<<"</g>\n";
 }
 
 
@@ -307,12 +311,26 @@ void generateFunctions()
   for(int i=0;i<c_index;i++)
   {
     string id=comp[i].getType()+to_string(comp[i].getNum());
-    script<<"function "<<id<<"()\n{\nalert(\"Current flowing through "<<id<<" "<<comp[i].realI()<<" "<<comp[i].imagI()<<" & Voltage across "<<id<<" "<<comp[i].realV()<<" "<<comp[i].imagV()<<"\")\n}\n";
+    script<<"function "<<id<<"()\n{\n"<<"document.getElementById(\"";
+    script<<id;
+    script<<"\").style.stroke=\"red\";\n";
+    script<<"alert(\"Current flowing through "<<id<<" "<<comp[i].realI()<<"A "<<comp[i].imagI()<<"° & Voltage across "<<id<<" "<<comp[i].realV()<<"V "<<comp[i].imagV()<<"°\");\n";
+    script<<"document.getElementById(\"";
+    script<<id;
+    script<<"\").style.stroke=\"black\";\n";
+    script<<"\n}\n";
   }
   for(int i=0;i<s_index;i++)
   {
     string id=sour[i].getType()+to_string(sour[i].getNum());
-    script<<"function "<<id<<"()\n{\nalert(\"Current flowing through "<<id<<" "<<comp[i].realI()<<" "<<comp[i].imagI()<<" & Voltage across "<<id<<" "<<comp[i].realV()<<" "<<comp[i].imagV()<<"\")\n}\n";
+    script<<"function "<<id<<"()\n{\n"<<"document.getElementById(\"";
+    script<<id;
+    script<<"\").style.stroke=\"red\";\n";
+    script<<"alert(\"Current flowing through "<<id<<" "<<sour[i].realI()<<"A "<<sour[i].imagI()<<"° & Voltage across "<<id<<" "<<sour[i].realV()<<"V "<<sour[i].imagV()<<"°\");\n";
+    script<<"document.getElementById(\"";
+    script<<id;
+    script<<"\").style.stroke=\"black\";\n";
+    script<<"\n}\n";
   }
 }
 
@@ -561,7 +579,10 @@ void genmaim() {
   std::complex<double> ans[totalvar][1] ;
 
 
-
+  cout << fixed << showpoint;
+    cout << setprecision(3);
+      outfile << fixed << showpoint;
+    outfile << setprecision(3);
 
   for(int i=0;i<scount;i++)
   {   
@@ -816,8 +837,8 @@ void genmaim() {
   outfile<<"FREQ "<< freq <<"hz" <<endl;
   cout <<"FREQ "<< freq <<"hz" <<endl;
   
-  outfile<<"Voltage\n";  
-  cout<<"Voltage\n";
+  outfile<<"\nVoltage\n";  
+  cout<<"\nVoltage\n";
 
   for(int count=0;count<num;count++)
   {   
@@ -850,12 +871,12 @@ void genmaim() {
         Istore[count] = (Vstore)/Z ; 
       }
 
-      double mag = abs(Vstore);
-      double argu = arg(Vstore)*(180)/3.14;
-      comp[count].addVoltage(real(Vstore),imag(Vstore));
-      outfile<<tp<<number<<" "<<mag<<" "<<argu;
+      double mag = round(abs(Vstore)*1000.0)/1000.0;
+      double argu = round(arg(Vstore)*(180*1000.0)/3.14)/1000.0;
+      comp[count].addVoltage(mag,argu);
       
       cout<<tp<<number<<" "<<mag<<" "<<argu;
+      outfile<<tp<<number<<" "<<mag<<"V "<<argu<<"°";
       
       outfile<<endl;
       cout<<endl;
@@ -872,12 +893,12 @@ void genmaim() {
 
      std::complex<double> Vstore = VolComplex[a] - VolComplex[b] ;
 
-     double mag=abs(Vstore);
-   double argu = arg(Vstore)*(180)/3.14;
-      sour[count].addVoltage(real(Vstore),imag(Vstore));
+     double mag=round(abs(Vstore)*1000.0)/1000.0;
+   double argu = round(arg(Vstore)*(180*1000.0)/3.14)/1000.0;
+      sour[count].addVoltage(mag,argu);
      cout<<c<<nu<<" "<<mag<<" "<<argu<<endl;
-     outfile<<c<<nu<<" "<<mag<<" "<<argu<<endl;
-
+     outfile<<c<<nu<<" "<<mag<<"V "<<argu<<"°"<<endl;
+     
 
   } 
 
@@ -889,13 +910,13 @@ void genmaim() {
     char tp = comp[count].getType() ;
     int number = comp[count].getNum();
 
-    double mag = abs(Istore[count]);
-    double argu = arg(Istore[count])*(180)/3.14;
+    double mag = round(abs(Istore[count])*1000.0)/1000.0;
+    double argu = round(arg(Istore[count])*(180*1000.0)/3.14)/1000.0;
     
-    comp[count].addCurrent(real(Istore[count]),imag(Istore[count]));
-    outfile<<tp<<number<<" "<<mag<<" "<<argu<<endl;
+    comp[count].addCurrent(mag,argu);
     cout<<tp<<number<<" "<<mag<<" "<<argu;
-
+    outfile<<tp<<number<<" "<<mag<<"A "<<argu<<"°"<<endl;
+    
     cout<<endl;
   } 
    // below is current
@@ -909,21 +930,22 @@ void genmaim() {
     { 
       float val = sour[count].getAmpli();
       if(count!=i)
-        val=0.0;
-      sour[count].addCurrent(val,0.0);
-      outfile<<c<<nu<<" "<<val<<" 0.0" ;
-      cout<<c<<nu<<" "<<val<<" 0.0" ;
+        val=0.000;
+      sour[count].addCurrent(val,0.000);
+      cout<<c<<nu<<" "<<val<<" 0.000" ;
+      outfile<<c<<nu<<" "<<val<<"A 0.000°" ;
+      
     }  
     else
     { std::complex<double> neg (-1,0) ;
 
       CurrComplex[count] = CurrComplex[count] * neg ; 
-      double mag= abs(CurrComplex[count]);
-      double argu = arg(CurrComplex[count])*(180)/3.14;
-      sour[count].addCurrent(real(CurrComplex[count]),imag(CurrComplex[count])); 
-      outfile<<c<<nu<<" "<<mag<<" "<<argu ;
+      double mag= round(abs(CurrComplex[count])*1000.0)/1000.0;
+      double argu = round(arg(CurrComplex[count])*(180*1000.0)/3.14)/1000.0;
+      sour[count].addCurrent(mag,argu); 
       cout<<c<<nu<<" "<<mag<<" "<<argu ;
-
+      outfile<<c<<nu<<" "<<mag<<"A "<<argu<<"°";
+      
     } 
 
     outfile<<endl;
