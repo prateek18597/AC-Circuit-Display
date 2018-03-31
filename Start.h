@@ -25,6 +25,7 @@ extern int c_index;
 extern Net net[100];
 ofstream ofile;
 ofstream outfile;
+ofstream script;
 
 void html()
 {   
@@ -34,6 +35,8 @@ void html()
     
     ofile<<"</script>\n";
     ofile<<"<script type=\"text/javascript\" src=\"script.js\">\n";
+    ofile<<"</script>\n";
+    ofile<<"<script type=\"text/javascript\" src=\"script1.js\">\n";
     ofile<<"</script>\n";
     
     ofile<<"</head><body>\n";
@@ -98,29 +101,29 @@ void line(int x,int y,int length,char c,int color)
 
 }
 
-void resistor(int x, int y,float nu,int val) {
+void resistor(int x, int y,float nu,int val,string id) {
   
-
-    ofile<<"<path d=\"M"<<x<<" "<<y<<" L"<<x+5<<" "<<y+10<<" L"<<x+10<<" "<<y<<" L"<<x+15<<" "<<y+10<<" L"<<x+20<<" "<<y<<" L"<<x+25<<" "<<y+10<<" L"<<x+30<<" "<<y<<"\" stroke=\"black\" fill=\"none\" stroke-width=\"3\"  /> "<<endl;
-//    ofile<<"<text x=\""<<x+10<<"\" y=\""<<y-4<<"\" fill=\"black\">r"<<nu<<"="<<val<<"Ohm </text>";
+    // ofile<<"div onclick=\"\""
+    ofile<<"<path d=\"M"<<x<<" "<<y<<" L"<<x+5<<" "<<y+10<<" L"<<x+10<<" "<<y<<" L"<<x+15<<" "<<y+10<<" L"<<x+20<<" "<<y<<" L"<<x+25<<" "<<y+10<<" L"<<x+30<<" "<<y<<"\" stroke=\"black\" fill=\"none\" stroke-width=\"3\" onclick=\""<<id<<"()\" /> "<<endl;
+   // ofile<<"<text x=\""<<x+10<<"\" y=\""<<y-4<<"\" fill=\"black\">r"<<nu<<"="<<val<<"Ohm </text>";
 }
 
-void capc(int x,int y){
+void capc(int x,int y,string id){
 
-  ofile<<"<line x1=\""<<x<<"\" "<<"y1=\""<<y<<"\" "<<"x2=\""<<x+7.5<<"\" "<<"y2=\""<<y<<"\" "<<"style=\"stroke:rgb(0,0,0);stroke-width:2\" />"<<endl;
-  ofile<<"<line x1=\""<<x+7.5<<"\" "<<"y1=\""<<y-20<<"\" "<<"x2=\""<<x+7.5<<"\" "<<"y2=\""<<y+20<<"\" "<<"style=\"stroke:rgb(0,0,0);stroke-width:2\" />"<<endl;
-  ofile<<"<line x1=\""<<x+17.5<<"\" "<<"y1=\""<<y-20<<"\" "<<"x2=\""<<x+17.5<<"\" "<<"y2=\""<<y+20<<"\" "<<"style=\"stroke:rgb(0,0,0);stroke-width:2\" />"<<endl;
-  ofile<<"<line x1=\""<<x+17.5<<"\" "<<"y1=\""<<y<<"\" "<<"x2=\""<<x+25<<"\" "<<"y2=\""<<y<<"\" "<<"style=\"stroke:rgb(0,0,0);stroke-width:2\" />"<<endl;
+  ofile<<"<line x1=\""<<x<<"\" "<<"y1=\""<<y<<"\" "<<"x2=\""<<x+7.5<<"\" "<<"y2=\""<<y<<"\" "<<"style=\"stroke:rgb(0,0,0);stroke-width:2\" onclick=\""<<id<<"()\" />"<<endl;
+  ofile<<"<line x1=\""<<x+7.5<<"\" "<<"y1=\""<<y-20<<"\" "<<"x2=\""<<x+7.5<<"\" "<<"y2=\""<<y+20<<"\" "<<"style=\"stroke:rgb(0,0,0);stroke-width:2\" onclick=\""<<id<<"()\" />"<<endl;
+  ofile<<"<line x1=\""<<x+17.5<<"\" "<<"y1=\""<<y-20<<"\" "<<"x2=\""<<x+17.5<<"\" "<<"y2=\""<<y+20<<"\" "<<"style=\"stroke:rgb(0,0,0);stroke-width:2\" onclick=\""<<id<<"()\" />"<<endl;
+  ofile<<"<line x1=\""<<x+17.5<<"\" "<<"y1=\""<<y<<"\" "<<"x2=\""<<x+25<<"\" "<<"y2=\""<<y<<"\" "<<"style=\"stroke:rgb(0,0,0);stroke-width:2\" onclick=\""<<id<<"()\" />"<<endl;
 }
 
 
-void Indc(int x,int y){
+void Indc(int x,int y,string id){
 
 
-  ofile<<"<path d=\"M"<<x<<","<<y<<" a0.5,1 0 0,0 10,0\" fill=\"none\" stroke=\"black\" stroke-width=\"3\" />" ;
-  ofile<<"<path d=\"M"<<x+10<<","<<y<<" a0.5,1 0 0,0 10,0\" fill=\"none\" stroke=\"black\" stroke-width=\"3\" />" ;
-  ofile<<"<path d=\"M"<<x+20<<","<<y<<" a0.5,1 0 0,0 10,0\" fill=\"none\" stroke=\"black\" stroke-width=\"3\" />" ;
-  ofile<<"<path d=\"M"<<x+30<<","<<y<<" a0.5,1 0 0,0 10,0\" fill=\"none\" stroke=\"black\" stroke-width=\"3\" />" ;
+  ofile<<"<path d=\"M"<<x<<","<<y<<" a0.5,1 0 0,0 10,0\" fill=\"none\" stroke=\"black\" stroke-width=\"3\" onclick=\""<<id<<"()\" />" ;
+  ofile<<"<path d=\"M"<<x+10<<","<<y<<" a0.5,1 0 0,0 10,0\" fill=\"none\" stroke=\"black\" stroke-width=\"3\" onclick=\""<<id<<"()\" />" ;
+  ofile<<"<path d=\"M"<<x+20<<","<<y<<" a0.5,1 0 0,0 10,0\" fill=\"none\" stroke=\"black\" stroke-width=\"3\" onclick=\""<<id<<"()\" />" ;
+  ofile<<"<path d=\"M"<<x+30<<","<<y<<" a0.5,1 0 0,0 10,0\" fill=\"none\" stroke=\"black\" stroke-width=\"3\" onclick=\""<<id<<"()\" />" ;
 
 }
 
@@ -242,7 +245,10 @@ void drawRes(int net1,int net2,int offset,int n,float val,char* c)
     int x=min(net1,net2);
       
     line(x,250+offset,l1,'h',1);
-    resistor(x+l1,250+offset,n,val);
+    string idrr="R"+to_string(n);
+    // ofile<<"<div onclick=\"R"<<n<<"()\">"<<endl;
+    resistor(x+l1,250+offset,n,val,idrr);
+    // ofile<<"</div>"<<endl;
     line(x+l1+30,250+offset,l1,'h',1);
 
    ofile<<"<text x=\""<<x+l1+10<<"\" y=\""<<246+offset<<"\" fill=\"black\">R"<<n<<"="<<val<<"Ohm </text>";
@@ -259,9 +265,11 @@ void drawCap(int net1,int net2,int offset,int n,float val)
   float l1=(diff-22)/2 ;
 
   int x=min(net1,net2);
-
+string idrr="C"+to_string(n);
     line(x,250+offset,l1,'h',1);
-    capc(x+l1,250+offset);
+    // ofile<<"<div onclick=\"C"<<n<<"()\">"<<endl;
+    capc(x+l1,250+offset,idrr);
+    // ofile<<"</div>"<<endl;
     line(x+l1+22,250+offset,l1,'h',1);
   
     ofile<<"<text x=\""<<x+l1+20<<"\" y=\""<<246+offset<<"\" fill=\"black\">C"<<n<<"="<<val<<"F</text>";
@@ -280,7 +288,10 @@ void drawInd(int net1,int net2,int offset,int n,float val)
 
   int x=min(net1,net2);
   line(x,250+offset,l1,'h',1);
-    Indc(x+l1,250+offset);
+  string idrr="L"+to_string(n);
+    // ofile<<"<div onclick=\"L"<<n<<"()\">"<<endl;
+    Indc(x+l1,250+offset,idrr);
+    // ofile<<"</div>"<<endl;
     line(x+l1+40,250+offset,l1,'h',1);
 
   ofile<<"<text x=\""<<x+l1+20<<"\" y=\""<<246+offset<<"\" fill=\"black\">L"<<n<<"="<<val<<"F</text>";
@@ -291,6 +302,15 @@ void drawInd(int net1,int net2,int offset,int n,float val)
 
 }
 
+void generateFunctions()
+{
+  for(int i=0;i<c_index;i++)
+  {
+    string id=comp[i].getType()+to_string(comp[i].getNum());
+    script<<"function "<<id<<"()\n{\nalert(\"Current flowing through "<<id<<" "<<comp[i].realI()<<" "<<comp[i].imagI()<<" Voltage across "<<id<<" "<<comp[i].realV()<<" "<<comp[i].imagV()<<"\");\n}\n";
+  }
+}
+
 void genmaim() {
   unsigned x, y;
   
@@ -298,6 +318,7 @@ void genmaim() {
 
   outfile.open("output.txt");  
   ofile.open("top.html");
+  script.open("script1.js");
   html();
 
   for(int i=0;i<100;i++)
@@ -882,6 +903,8 @@ void genmaim() {
     if(c == 'I') 
     { 
       float val = sour[count].getAmpli();
+      if(count!=i)
+        val=0.0;
       sour[count].addCurrent(val,0.0);
       outfile<<c<<nu<<" "<<val<<" 0.0" ;
       cout<<c<<nu<<" "<<val<<" 0.0" ;
@@ -907,13 +930,13 @@ void genmaim() {
 
   }  
 
- 
+  generateFunctions();
   
   footer();
   close();
   ofile.close();
   outfile.close();
-
+  script.close();
 }
 
 
