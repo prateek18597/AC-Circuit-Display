@@ -15,6 +15,7 @@ using namespace std;
 
 	int posi=0;
 	Net net[1000];
+	int neterror[1000]={0};
 	Component comp[1000];
 	Source sour[1000];
 	int c_index=0;
@@ -144,12 +145,15 @@ sine (SINE)[ ]*(\(){whitespace}+{Decimal}{whitespace}+{Decimal}{whitespace}+{Dec
 	
 	if(sour[s_index].getInitialNet()==sour[s_index].getFinalNet())
 	{
+		cout<<"Initial and Final net should be different in "<<yytext<<endl;
 		sour[s_index].clear();
 	}
 	else
 	{	sour[s_index].setPosition(posi++);
 		s_index++;
 		sour[s_index-1].setId(s_index-1);
+		neterror[sour[s_index-1].getInitialNet()]++;
+		neterror[sour[s_index-1].getFinalNet()]++;
 		net[sour[s_index-1].getInitialNet()].addSour(sour[s_index-1]);
 		net[sour[s_index-1].getFinalNet()].addSour(sour[s_index-1]);
 	}								
@@ -250,7 +254,7 @@ sine (SINE)[ ]*(\(){whitespace}+{Decimal}{whitespace}+{Decimal}{whitespace}+{Dec
 						
 									if(comp[c_index].getInitialNet()==comp[c_index].getFinalNet())
 									{	
-										cout<<"Both Net can't be same in "<<yytext;
+										cout<<"Initial and Final net should be different in "<<yytext<<endl;
 										comp[c_index].clear();
 										
 									}
@@ -258,6 +262,8 @@ sine (SINE)[ ]*(\(){whitespace}+{Decimal}{whitespace}+{Decimal}{whitespace}+{Dec
 									{
 										comp[c_index].setPosition(posi++);
 										c_index++;
+										neterror[comp[c_index-1].getInitialNet()]++;
+										neterror[comp[c_index-1].getFinalNet()]++;
 										net[comp[c_index-1].getInitialNet()].addComp(comp[c_index-1]);
 										net[comp[c_index-1].getFinalNet()].addComp(comp[c_index-1]);
 									}	
@@ -265,7 +271,7 @@ sine (SINE)[ ]*(\(){whitespace}+{Decimal}{whitespace}+{Decimal}{whitespace}+{Dec
 									
 }
 
-[(Netlist:)(NETLIST:)(netlist:)] {
+{whitespace}*[(Netlist:)(NETLIST:)(netlist:)]{whitespace}* {
 
 }
 
@@ -273,7 +279,6 @@ sine (SINE)[ ]*(\(){whitespace}+{Decimal}{whitespace}+{Decimal}{whitespace}+{Dec
 		term=true;
 		// cout<<yytext;
 		cout<<"\"Input File has some error.So Circuit might not be complete.\""<<endl;
-		exit(1);
 
 		
 }
@@ -290,6 +295,24 @@ int main(int argc, char* argv[])
         yyin = fh;
 
     yylex();
+    for(int i=0;i<1000;i++)
+    {
+    	if(neterror[i]==1)
+    	{
+    		if(i>0){
+    			cout<<"Circuit is Incomplete. Net"<<i-1<<" has only one connection."<<endl;
+    			// break;
+    		}
+    		else{
+    			cout<<"Circuit is Incomplete. Ground has only one connection."<<endl;
+    			// break;
+    		}
+    	}
+    }
+    if(s_index==0)
+    {
+    	cout<<"There is no Voltage or Current source in the Circuit."<<endl;
+    }
     // if(!term){
     	genmaim();
     	return 0;

@@ -827,12 +827,27 @@ void genmaim() {
 
       } 
 
-  } 
+  }
+
+  // bool ErrorFlag=false;
+
+  // for(int ii=0;ii<totalvar-1;ii++)
+  // {
+  //   if(isnan(abs(soln(ii,0))) || isinf(abs(soln(ii,0))))
+  //   {
+  //     ErrorFlag=true;
+  //     break;
+  //   }
+  // }
+
   // for(int inn=0;inn<10;inn++)
   // cout<<VolComplex[inn]<<" ";  
 
  // cout<<soln<<endl;
   std::complex<double> Istore[1000];
+
+  // if(ErrorFlag)
+    cout<<"-----------------------------------------------------------"<<endl;
 
   freq=freq/1000.0;
   freq=trunc(freq*1000.0)/1000.0;
@@ -951,7 +966,7 @@ void genmaim() {
     } 
 
     outfile<<endl;
-    cout<<endl;
+    cout<<endl<<"-----------------------------------------------------------"<<endl;
   } 
   outfile<<endl;
   cout<<endl; 
