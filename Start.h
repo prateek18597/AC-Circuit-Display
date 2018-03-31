@@ -835,6 +835,7 @@ void genmaim() {
   std::complex<double> Istore[1000];
 
   freq=freq/1000.0;
+  freq=trunc(freq*1000.0)/1000.0;
   outfile<<"FREQ "<< freq <<"Khz" <<endl;
   cout <<"FREQ "<< freq <<"Khz" <<endl;
   
@@ -872,8 +873,8 @@ void genmaim() {
         Istore[count] = (Vstore)/Z ; 
       }
 
-      double mag = round(abs(Vstore)*1000.0)/1000.0;
-      double argu = round(arg(Vstore)*(180*1000.0)/3.14)/1000.0;
+      double mag = trunc(abs(Vstore)*1000.0)/1000.0;
+      double argu = trunc(arg(Vstore)*(180*1000.0)/3.14)/1000.0;
       comp[count].addVoltage(mag,argu);
       
       cout<<tp<<number<<" "<<mag<<" "<<argu;
@@ -894,8 +895,8 @@ void genmaim() {
 
      std::complex<double> Vstore = VolComplex[a] - VolComplex[b] ;
 
-     double mag=round(abs(Vstore)*1000.0)/1000.0;
-   double argu = round(arg(Vstore)*(180*1000.0)/3.14)/1000.0;
+     double mag=trunc(abs(Vstore)*1000.0)/1000.0;
+   double argu = trunc(arg(Vstore)*(180*1000.0)/3.14)/1000.0;
       sour[count].addVoltage(mag,argu);
      cout<<c<<nu<<" "<<mag<<" "<<argu<<endl;
      outfile<<c<<nu<<" "<<mag<<"V "<<argu<<"°"<<endl;
@@ -911,8 +912,8 @@ void genmaim() {
     char tp = comp[count].getType() ;
     int number = comp[count].getNum();
 
-    double mag = round(abs(Istore[count])*1000.0)/1000.0;
-    double argu = round(arg(Istore[count])*(180*1000.0)/3.14)/1000.0;
+    double mag = trunc(abs(Istore[count])*1000.0)/1000.0;
+    double argu = trunc(arg(Istore[count])*(180*1000.0)/3.14)/1000.0;
     
     comp[count].addCurrent(mag,argu);
     cout<<tp<<number<<" "<<mag<<" "<<argu;
@@ -929,9 +930,9 @@ void genmaim() {
 
     if(c == 'I') 
     { 
-      float val = sour[count].getAmpli();
+      float val = trunc(sour[count].getAmpli()*1000.0)/1000.0;
       if(count!=i)
-        val=0.000;
+        val=trunc(0.000*1000)/1000.0;
       sour[count].addCurrent(val,0.000);
       cout<<c<<nu<<" "<<val<<" 0.000" ;
       outfile<<c<<nu<<" "<<val<<"A 0.000°" ;
@@ -941,8 +942,8 @@ void genmaim() {
     { std::complex<double> neg (-1,0) ;
 
       CurrComplex[count] = CurrComplex[count] * neg ; 
-      double mag= round(abs(CurrComplex[count])*1000.0)/1000.0;
-      double argu = round(arg(CurrComplex[count])*(180*1000.0)/3.14)/1000.0;
+      double mag= trunc(abs(CurrComplex[count])*1000.0)/1000.0;
+      double argu = trunc(arg(CurrComplex[count])*(180000)/3.14)/1000.0;
       sour[count].addCurrent(mag,argu); 
       cout<<c<<nu<<" "<<mag<<" "<<argu ;
       outfile<<c<<nu<<" "<<mag<<"A "<<argu<<"°";
