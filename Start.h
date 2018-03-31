@@ -128,10 +128,10 @@ void Indc(int x,int y,string id){
 }
 
 
-void Volt(int x,int y,bool side)
+void Volt(int x,int y,bool side,string id)
 {
   //ofile<<"<text x=\""<<x-1<<"\" y=\""<<y-2<<"\" "<<" fill=\"red\">+"<<"</text>"<<endl;
-  ofile<<"<circle cx=\""<<x<<"\"  cy=\""<<y<<"\" r=\"20\" "<<"stroke=\"black\" stroke-width=\"3\" fill=\"none\" />";
+  ofile<<"<circle cx=\""<<x<<"\"  cy=\""<<y<<"\" r=\"20\" "<<"stroke=\"black\" stroke-width=\"3\" fill=\"none\" onclick=\""<<id<<"()\"/>";
   ofile<<"<text x=\""<<x-8<<"\" y=\""<<y+5<<"\" "<<" font-size=\"20\" fill=\"black\">~"<<"</text>"<<endl;
   if(side==true)
   {
@@ -151,9 +151,9 @@ void Volt(int x,int y,bool side)
 
 
 
-void Curr(int x,int y,bool side)
+void Curr(int x,int y,bool side,string id)
 {
-  ofile<<"<rect x=\""<<x<<"\" y=\""<<y-10<<"\" width=\"20\" height=\"20\" style=\"fill:none;stroke:black;stroke-width:2;\" />";
+  ofile<<"<rect x=\""<<x<<"\" y=\""<<y-10<<"\" width=\"20\" height=\"20\" style=\"fill:none;stroke:black;stroke-width:2;\" onclick=\""<<id<<"()\"/>";
 
   if(side==true)
   { 
@@ -177,7 +177,7 @@ void Curr(int x,int y,bool side)
 
 
 
-void DrawCurr(int net1,int net2,int offset)
+void DrawCurr(int net1,int net2,int offset,string id)
 {
   int diff=abs(net1-net2);
 
@@ -193,7 +193,7 @@ void DrawCurr(int net1,int net2,int offset)
   side=false;
 
   line(x,250+offset,l1,'h',1);
-  Curr(x+l1,250+offset,side);
+  Curr(x+l1,250+offset,side,id);
   line(x+l1+20,250+offset,l1,'h',1);
 
   line(net1,250,offset,'v',0);
@@ -208,7 +208,7 @@ bool compareFreq(Source a,Source b)
 } 
 
 
-void DrawVolt(int net1,int net2,int offset)
+void DrawVolt(int net1,int net2,int offset,string id)
 { 
   
   int diff=abs(net2-net1);
@@ -225,7 +225,7 @@ void DrawVolt(int net1,int net2,int offset)
   side=false;
 
   line(x,250+offset,l1,'h',1);
-  Volt(x+l1+20,250+offset,side);
+  Volt(x+l1+20,250+offset,side,id);
   line(x+l1+40,250+offset,l1,'h',1);
 
   line(net1,250,offset,'v',0);
@@ -307,7 +307,12 @@ void generateFunctions()
   for(int i=0;i<c_index;i++)
   {
     string id=comp[i].getType()+to_string(comp[i].getNum());
-    script<<"function "<<id<<"()\n{\nalert(\"Current flowing through "<<id<<" "<<comp[i].realI()<<" "<<comp[i].imagI()<<" Voltage across "<<id<<" "<<comp[i].realV()<<" "<<comp[i].imagV()<<"\")\n}\n";
+    script<<"function "<<id<<"()\n{\nalert(\"Current flowing through "<<id<<" "<<comp[i].realI()<<" "<<comp[i].imagI()<<" & Voltage across "<<id<<" "<<comp[i].realV()<<" "<<comp[i].imagV()<<"\")\n}\n";
+  }
+  for(int i=0;i<s_index;i++)
+  {
+    string id=sour[i].getType()+to_string(sour[i].getNum());
+    script<<"function "<<id<<"()\n{\nalert(\"Current flowing through "<<id<<" "<<comp[i].realI()<<" "<<comp[i].imagI()<<" & Voltage across "<<id<<" "<<comp[i].realV()<<" "<<comp[i].imagV()<<"\")\n}\n";
   }
 }
 
@@ -494,22 +499,22 @@ void genmaim() {
      float freq=sour[i].getFreq();  
      float damp=sour[i].getDamp();   
 
-    
+      int numberV=sour[i].getNum();
 
 
       if( sour[i].getType() == 'V' )
-      { DrawVolt(netval[a],netval[b],viset);  
+      { DrawVolt(netval[a],netval[b],viset,"V"+to_string(numberV));  
         sourcevarnum[i]=xo;
         xo++;
       }  
       else if(sour[i].getType() == 'I')
-      DrawCurr(netval[a],netval[b],viset);
+      DrawCurr(netval[a],netval[b],viset,"I"+to_string(numberV));
       
       float d= abs(netval[a]-netval[b]);
       d=d/2;
       d=min(netval[a],netval[b]) + d;
       ofile<<"<text x=\""<<d-2<<"\" y=\""<<225+viset<<"\" fill=\"black\"> SINE("<<dco<<" "<<amp<<" "<<freq<<"Hz "<<delay<<" "<<damp<<") </text>";
-
+      ofile<<"<text x=\""<<d-30<<"\"y=\""<<225+viset<<"\" fill=\"black\">"<<sour[i].getType()<<numberV<<"</text>\n";
       viset-= 80;
   
     //SINE ( < DCOf f set> < Amplitude> < F requency> < Delay> < DampingF actor>)
