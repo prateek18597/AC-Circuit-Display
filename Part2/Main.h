@@ -334,13 +334,13 @@ void generateFunctions()
   }
 }
 
-void genmaim() {
+void genmaim(string outputfile,string resultfile) {
   unsigned x, y;
   
   bool N[1000]={false};
 
-  outfile.open("results.txt");  
-  ofile.open("top.html");
+  outfile.open(resultfile);  
+  ofile.open(outputfile);
   script.open("script1.js");
   html();
 

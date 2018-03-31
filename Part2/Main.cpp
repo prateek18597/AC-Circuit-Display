@@ -291,8 +291,11 @@ int main(int argc, char* argv[])
     
     FILE *fh;
 
-    if (argc == 2 && (fh = fopen(argv[1], "r")))
+    if ((fh = fopen(argv[1], "r")))
         yyin = fh;
+
+    string outputfile=argv[2];
+    string resultfile=argv[3];
 
     yylex();
     for(int i=0;i<1000;i++)
@@ -314,7 +317,7 @@ int main(int argc, char* argv[])
     	cout<<"There is no Voltage or Current source in the Circuit."<<endl;
     }
     // if(!term){
-    	genmaim();
+    	genmaim(outputfile,resultfile);
     	return 0;
     // }
     // return 0;
