@@ -799,7 +799,6 @@ void genmaim() {
       int b = comp[count].getFinalNet();
       int number = comp[count].getNum();
       char tp = comp[count].getType() ;
-
       float fl = comp[count].getVal();
 
       std::complex<double> flc (fl,0) ; 
@@ -827,7 +826,7 @@ void genmaim() {
 
       double mag = abs(Vstore);
       double argu = arg(Vstore)*(180)/3.14;
-
+      comp[count].addVoltage(real(Vstore),imag(Vstore));
       outfile<<tp<<number<<" "<<mag<<" "<<argu;
       
       cout<<tp<<number<<" "<<mag<<" "<<argu;
@@ -849,7 +848,7 @@ void genmaim() {
 
      double mag=abs(Vstore);
    double argu = arg(Vstore)*(180)/3.14;
-
+      sour[count].addVoltage(real(Vstore),imag(Vstore));
      cout<<c<<nu<<" "<<mag<<" "<<argu<<endl;
      outfile<<c<<nu<<" "<<mag<<" "<<argu<<endl;
 
@@ -867,6 +866,7 @@ void genmaim() {
     double mag = abs(Istore[count]);
     double argu = arg(Istore[count])*(180)/3.14;
     
+    comp[count].addCurrent(real(Istore[count]),imag(Istore[count]));
     outfile<<tp<<number<<" "<<mag<<" "<<argu<<endl;
     cout<<tp<<number<<" "<<mag<<" "<<argu;
 
@@ -882,6 +882,7 @@ void genmaim() {
     if(c == 'I') 
     { 
       float val = sour[count].getAmpli();
+      sour[count].addCurrent(val,0.0);
       outfile<<c<<nu<<" "<<val<<" 0.0" ;
       cout<<c<<nu<<" "<<val<<" 0.0" ;
     }  
@@ -890,7 +891,8 @@ void genmaim() {
 
       CurrComplex[count] = CurrComplex[count] * neg ; 
       double mag= abs(CurrComplex[count]);
-      double argu = arg(CurrComplex[count])*(180)/3.14; 
+      double argu = arg(CurrComplex[count])*(180)/3.14;
+      sour[count].addCurrent(real(CurrComplex[count]),imag(CurrComplex[count])); 
       outfile<<c<<nu<<" "<<mag<<" "<<argu ;
       cout<<c<<nu<<" "<<mag<<" "<<argu ;
 

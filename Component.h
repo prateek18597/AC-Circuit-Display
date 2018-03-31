@@ -1,4 +1,6 @@
-#include<string.h>
+#include<complex>
+#include <cmath>
+using namespace std;
 class Component
 {
 	private:
@@ -10,8 +12,39 @@ class Component
 		int f_net;
 		float value;
 		char* val;
+		double curr_r=0,curr_i=0;
+		double volt_r=0,volt_i=0;
 
 	public:
+
+		void addCurrent(double i,double j)
+		{
+			curr_r+=i;
+			curr_i+=j;
+		}
+
+		void addVoltage(double i,double j)
+		{
+			volt_r+=i;
+			volt_i+=j;
+		}
+
+		double realV()
+		{
+			return volt_r;
+		}
+		double realI()
+		{
+			return curr_r;
+		}
+		double imagV()
+		{
+			return volt_i;
+		}
+		double imagI()
+		{
+			return curr_i;
+		}
 
 		int getPosition()
 		{
