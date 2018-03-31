@@ -762,7 +762,7 @@ void genmaim() {
   soln = (rmat.inverse()*B) ;
   
 
-  for(int cn=1;cn<numnets;cn++)
+  for(int cn=1;cn<enunet.size();cn++)
   {	
   	int var = enunet[cn] ;
   	VolComplex[var] = soln(cn-1,0);

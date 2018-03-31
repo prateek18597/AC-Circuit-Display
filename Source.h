@@ -1,6 +1,7 @@
 class Source
 {
 	private:
+		int position;
 		int id;
 		char type;
 		int num;
@@ -15,6 +16,17 @@ class Source
 		float damp;
 	public:
 		
+
+		int getPosition()
+		{
+			return position;
+		}
+
+		void setPosition(int pos)
+		{
+			position=pos;
+		}
+
 		int getId()
 		{
 			return id;
