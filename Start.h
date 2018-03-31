@@ -307,7 +307,7 @@ void generateFunctions()
   for(int i=0;i<c_index;i++)
   {
     string id=comp[i].getType()+to_string(comp[i].getNum());
-    script<<"function "<<id<<"()\n{\nalert(\"Current flowing through "<<id<<" "<<comp[i].realI()<<" "<<comp[i].imagI()<<" Voltage across "<<id<<" "<<comp[i].realV()<<" "<<comp[i].imagV()<<"\");\n}\n";
+    script<<"function "<<id<<"()\n{\nalert(\"Current flowing through "<<id<<" "<<comp[i].realI()<<" "<<comp[i].imagI()<<" Voltage across "<<id<<" "<<comp[i].realV()<<" "<<comp[i].imagV()<<"\")\n}\n";
   }
 }
 
