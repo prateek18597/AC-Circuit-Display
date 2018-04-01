@@ -59,7 +59,7 @@ void header(int numnets) {
  
 
 // ofile<<"<svg height=\""<<2000<<"\" width=\""<<2000<<"\">"<<endl;
-ofile<<"<div id=\"container\" style=\"width: 1400px; height: 700px;\">\n";
+ofile<<"<div id=\"container\" style=\"width: 1200px; height: 650px;\">\n";
 ofile<<"<svg id=\"circuit\" xmlns=\"http://www.w3.org/2000/svg\"";
 ofile<<"style=\"overflow: hidden; display: inline; width: inherit;";
 ofile<<"min-width: inherit; max-width: inherit; height: inherit;";
@@ -121,7 +121,7 @@ void capc(int x,int y,string id){
 
 void Indc(int x,int y,string id){
 
-  ofile<<"<g id=\""<<id<<"\" openclick=\""<<id<<"()\" stroke=\"black\">\n";
+  ofile<<"<g id=\""<<id<<"\" onclick=\""<<id<<"()\" stroke=\"black\">\n";
   ofile<<"<path class=\""<<id<<"\" d=\"M"<<x<<","<<y<<" a0.5,1 0 0,0 10,0\" fill=\"none\"  stroke-width=\"3\" onclick=\""<<id<<"()\" />" ;
   ofile<<"<path class=\""<<id<<"\" d=\"M"<<x+10<<","<<y<<" a0.5,1 0 0,0 10,0\" fill=\"none\"  stroke-width=\"3\" onclick=\""<<id<<"()\" />" ;
   ofile<<"<path class=\""<<id<<"\" d=\"M"<<x+20<<","<<y<<" a0.5,1 0 0,0 10,0\" fill=\"none\"  stroke-width=\"3\" onclick=\""<<id<<"()\" />" ;

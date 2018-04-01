@@ -11,13 +11,14 @@ This application solves AC Circuit given in Splice Netlist format and generate a
 4. Linux based Operating System (Preferably Ubuntu)
 5. GNU g++ compiler with support for C++11.
 
-###Procedure
-1. Write Splice Netlist format input in "top.cir".
-2. Open Terminal and Execute "make"(It will compile and run application for you and upon completion, It will open top.html in firefox for you).
+###Instructions
+1. Execute "make" command in terminal.
+2. ./ac_circuit_solver <input-circuit> <output-html-file> <result-file>
 3. If there are any Error in the Input or If Circuit is incomplete then it will be shown on the Terminal and also you can see your circuit's image.
-4. "results.txt" will contain the analysis of the AC circuit which will also be shown on terminal.
-5. "top.html" this page will show the SVG image Generated for the AC circuit. You can zoom the image with mouse and with buttons given at the Bottom-Left corner of the page.
-6. To See AC analysis of any Element click on the Element, this will generate a Dialog box which will have Voltage across that element and Current flowing through that element. Until the Dialog box is open,Element that generated it will be red in color.
+4. To display the circuit "firefox <output-html-file>".
+5. <result-file> will contain the analysis of the AC circuit which will also be shown on terminal.
+6. <output-html-file> this page will show the SVG image Generated for the AC circuit. You can zoom the image with mouse and with buttons given at the Bottom-Left corner of the page.
+7. To See AC analysis of any Element click on the Element, this will generate a Dialog box which will have Voltage across that element and Current flowing through that element. Until the Dialog box is open,Element that generated it will be red in color.
 
 ##Tools Used
 
@@ -54,8 +55,7 @@ Blue Dots on the Image represents connections, other overlapping lines means not
 R1 Net3 0 10K 
 C1 Net2 Net3 100NF 
 L1 Net1 Net2 10NH 
-V1 Net1 0 SINE ( 0.0 1.0 10Khz 0.0S 0.0 )
-<br>                                     
+V1 Net1 0 SINE ( 0.0 1.0 10Khz 0.0S 0.0 )                        
 Take a note over spaces given above.
 
 ##NOTE:
